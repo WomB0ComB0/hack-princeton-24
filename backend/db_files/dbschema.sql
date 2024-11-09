@@ -16,13 +16,13 @@ CREATE TABLE BankAccountStatuses (
 
 -- Create table for Banks
 CREATE TABLE Banks (
-    ID INT PRIMARY KEY,
+    ID VARCHAR(50) PRIMARY KEY,
     Name VARCHAR(100)
 );
 
 -- Create table for Users
 CREATE TABLE Users (
-    ID INT PRIMARY KEY,
+    ID VARCHAR(50) PRIMARY KEY,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     Birthdate DATE,
@@ -33,7 +33,7 @@ CREATE TABLE Users (
 -- Create table for Messages
 CREATE TABLE Messages (
     ID INT PRIMARY KEY,
-    UserID INT,
+    UserID VARCHAR(50),
     Content STRING,
     FOREIGN KEY (UserID) REFERENCES Users(ID)
 );
@@ -60,8 +60,8 @@ CREATE TABLE TransactionStatuses (
 
 -- Create table for Transactions
 CREATE TABLE Transactions (
-    ID INT PRIMARY KEY,
-    UserID INT,
+    ID VARCHAR(50) PRIMARY KEY,
+    UserID VARCHAR(50),
     TransactionTypeID INT,
     CurrencyID INT,
     TransactionStatusID INT,
@@ -75,9 +75,9 @@ CREATE TABLE Transactions (
 
 -- Create table for BankAccounts
 CREATE TABLE BankAccounts (
-    ID INT PRIMARY KEY,
+    ID VARCHAR(50) PRIMARY KEY,
     BankID INT,
-    UserID STRING,
+    UserID VARCHAR(50),
     BankAccountTypeID INT,
     StatusID INT,
     FOREIGN KEY (BankID) REFERENCES Banks(ID),
@@ -89,7 +89,7 @@ CREATE TABLE BankAccounts (
 
 -- Create table for AccountBalances
 CREATE TABLE AccountBalances (
-    ID INT PRIMARY KEY,
+    ID INT PRIMARY KEY IDENTITY,
     BankAccountID INT,
     CurrencyID INT,
     Amount DECIMAL(15, 2),
