@@ -2,7 +2,6 @@ const Transaction = require('../models/transactionSchema.js');
 const express = require('express');
 const mongoose = require('mongoose');
 const transactionRouter = express.Router();
-require('dotenv').config();
 const apiKey = process.env.VERBWIRE_API_KEY;
 const verbwire = require('verbwire')(apiKey);
 const authenticateToken = require('../middlewares/authMiddleware.js');
