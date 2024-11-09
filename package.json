@@ -1,0 +1,17 @@
+{
+  "name": "hack-princeton-24",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd frontend && pnpm run dev\" \"cd backend && npm run start\"",
+    "lint": "bunx biome check --write ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@biomejs/biome": "1.9.4",
+    "concurrently": "^9.1.0"
+  }
+}

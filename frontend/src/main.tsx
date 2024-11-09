@@ -1,17 +1,17 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import routes from "@/routes";
-import App from "@/App";
-import "@/global";
+import App from '@/App';
+import routes from '@/routes';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import '@/global';
 
-const container = document.getElementById("root") as HTMLElement;
+const container = document.getElementById('root') as HTMLElement;
 
 const root = createRoot(container);
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: routes,
     errorElement: <div>error</div>,

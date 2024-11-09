@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import mkcert from "vite-plugin-mkcert";
-import tsPaths from "vite-tsconfig-paths";
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
+import mkcert from 'vite-plugin-mkcert';
+import tsPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   server: {
@@ -11,21 +11,21 @@ export default defineConfig({
   plugins: [
     react(),
     mkcert({
-      source: "coding",
+      source: 'coding',
     }),
     tsPaths(),
   ],
   build: {
-    cssMinify: "lightningcss",
+    cssMinify: 'lightningcss',
     rollupOptions: {
       output: {
         manualChunks: {
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
         },
       },
     },
   },
   optimizeDeps: {
-    include: ["react/jsx-runtime"],
+    include: ['react/jsx-runtime'],
   },
 });

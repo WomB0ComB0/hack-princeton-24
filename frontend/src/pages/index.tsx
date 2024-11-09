@@ -1,22 +1,29 @@
-'use client'
+'use client';
 
-import { useState, ReactNode } from 'react'
-import { motion } from 'framer-motion'
-import { FiBarChart2, FiPieChart, FiDollarSign, FiEdit3, FiDownload, FiLayers } from 'react-icons/fi'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent } from "@/components/ui/card"
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { motion } from 'framer-motion';
+import { ReactNode, useState } from 'react';
+import {
+  FiBarChart2,
+  FiDollarSign,
+  FiDownload,
+  FiEdit3,
+  FiLayers,
+  FiPieChart,
+} from 'react-icons/fi';
 
 export default function IndexPage() {
-  const [description, setDescription] = useState<string>('')
+  const [description, setDescription] = useState<string>('');
 
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-gray-800 to-gray-900 text-white">
         <div className="container mx-auto px-6 py-24">
-          <motion.h1 
+          <motion.h1
             className="text-5xl font-bold mb-4"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -24,7 +31,7 @@ export default function IndexPage() {
           >
             Personalized Financial Planning Made Easy
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="text-xl mb-8"
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -49,17 +56,17 @@ export default function IndexPage() {
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard 
+            <FeatureCard
               icon={<FiEdit3 className="w-12 h-12 text-green-500" />}
               title="Customizable Reports"
               description="Describe your needs and get personalized financial reports."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<FiBarChart2 className="w-12 h-12 text-green-500" />}
               title="Interactive Charts"
               description="Visualize your financial data with interactive and editable charts."
             />
-            <FeatureCard 
+            <FeatureCard
               icon={<FiDownload className="w-12 h-12 text-green-500" />}
               title="Excel Export"
               description="Download your reports as Excel spreadsheets for further analysis."
@@ -108,7 +115,9 @@ export default function IndexPage() {
       <section className="bg-green-500 text-white py-20">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold mb-4">Ready to Take Control of Your Finances?</h2>
-          <p className="text-xl mb-8">Sign up now and start creating your personalized financial reports.</p>
+          <p className="text-xl mb-8">
+            Sign up now and start creating your personalized financial reports.
+          </p>
           <Button className="bg-white text-green-500 hover:bg-gray-100 font-bold py-3 px-6 rounded-full text-lg">
             Sign Up Free
           </Button>
@@ -122,16 +131,18 @@ export default function IndexPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-function FeatureCard(
-  { icon, title, description }: 
-  {
-    icon: React.ReactNode,
-    title: string,
-    description: string}
-) {
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
   return (
     <Card className="flex flex-col items-center text-center p-6">
       <CardContent>
@@ -140,7 +151,7 @@ function FeatureCard(
         <p className="text-gray-600">{description}</p>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function ExcelPreviewChart({ type }: { type: 'pie' | 'line' }) {
@@ -152,5 +163,5 @@ function ExcelPreviewChart({ type }: { type: 'pie' | 'line' }) {
         <FiBarChart2 className="w-20 h-20 text-green-500" />
       )}
     </div>
-  )
+  );
 }

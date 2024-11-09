@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authenticateToken = require('./middlewares/authMiddleware'); 
+const authenticateToken = require('./middlewares/authMiddleware');
 
 // Import route files
 const budgetRoutes = require('./routes/budgetRoutes');
@@ -18,15 +18,14 @@ const app = express();
 const port = process.env.PORT;
 const dbURI = process.env.DB_URI;
 
-
 // Middleware
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
 // Connect routes
@@ -40,15 +39,14 @@ app.use('/users', userRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-    res.status(200).send("Connected to server successfully!");
+  res.status(200).send('Connected to server successfully!');
 });
 
 // Connect to MongoDB and start the server
-mongoose.connect(dbURI)
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(port, () => console.log(`Server is running on port ${port}`));
-    })
-    .catch((error) => console.error('Failed to connect to MongoDB', error));
-
-
+mongoose
+  .connect(dbURI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(port, () => console.log(`Server is running on port ${port}`));
+  })
+  .catch((error) => console.error('Failed to connect to MongoDB', error));
