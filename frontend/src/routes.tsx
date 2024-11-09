@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { type RouteObject } from "react-router-dom";
+import type {  RouteObject } from "react-router-dom";
 
 const Index = lazy(() => import("@/pages/index"));
 const Notfound = lazy(() => import("@/pages/404"));
