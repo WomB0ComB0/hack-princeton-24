@@ -5,6 +5,7 @@ const transactionRouter = express.Router();
 const apiKey = process.env.VERBWIRE_API_KEY;
 const verbwire = require('verbwire')(apiKey);
 const authenticateToken = require('../middlewares/authMiddleware.js');
+const { createNFT } = require('../verbwise/verbwiseMintOperations/index.js');
 
 transactionRouter.get('/:userId', authenticateToken, async (req, res) => {
     
@@ -37,7 +38,7 @@ transactionRouter.get('/:userId/:goalId/summary', authenticateToken, async (req,
         const { transactionType, date } = req.params;
         const matchCondition = {
             userId: new mongoose.Types.ObjectId(userId.trim()),
-            goalId: new mongoose.Types.ObjectId(userId.trim())
+            goalId: new mongoose.Types.ObjectId(goalId.trim())
         };
 
         if (transactionType) {
@@ -88,6 +89,7 @@ transactionRouter.get('/:userId/summary', authenticateToken, async (req, res) =>
 
 transactionRouter.post('/:userId/:goalId', authenticateToken, async (req, res) => {
     const { amount, transactionType, date, description } = req.body;
+    const blockchainVerified = req.query.blockchainVerified === 'true';
 
     const transaction = new Transaction({
         goalId: new mongoose.Types.ObjectId(req.params.goalId.trim()),
@@ -96,33 +98,27 @@ transactionRouter.post('/:userId/:goalId', authenticateToken, async (req, res) =
         transactionType,
         date: new Date(date),
         description,
+        blockchainVerified,
     });
     
-
-    const metaData = {
-        name: `Date: ${transaction.date} Goal: ${transaction.goalId} Transaction: ${transaction.transactionType} Amount: ${transaction.amount}`,
-        description: `${transaction.description}`,
-        contractAddress: '0xB4EDD991e2b6b7fa041122F5b9A82Eed2f740Be3',
-        data: JSON.stringify([
-            { "trait_type": "goalId", "value": transaction.goalId.toString() },
-            { "trait_type": "userId", "value": transaction.userId.toString() },
-            { "trait_type": "amount", "value": `${transaction.amount} USD` },
-            { "trait_type": "transactionType", "value": transaction.transactionType },
-            { "trait_type": "date", "value": transaction.date.toISOString() },
-            { "trait_type": "description", "value": transaction.description },
-        ]),
-        chain: 'sepolia',
-    };
 
     try {
 
         const newTransaction = await transaction.save();
-        const success = await verbwire.mint.mintFromMetadata(metaData);
 
-        if (newTransaction && success) {
+        if (blockchainVerified) {
+            const execution = createNFT(transaction);
+
+            
+            if (newTransaction && execution.status === 'success') {
+                res.status(200).json(newTransaction);
+            } else {
+                res.status(500).json({ message: "Failed to complete transaction." });
+            }
+        }
+
+        if (newTransaction) {
             res.status(200).json(newTransaction);
-        } else {
-            res.status(500).json({ message: "Failed to complete transaction and mint." });
         }
     } catch (error) {
         console.error("Error during processing:", error.message);

@@ -20,6 +20,7 @@
     "package.json": "pnpm sort-package-json"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^0.35.5",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",

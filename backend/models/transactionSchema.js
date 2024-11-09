@@ -44,6 +44,10 @@ const transactionSchema = mongoose.Schema({
         minLength: [5, 'Too short'],
         maxLength: [50, 'Too long'],
     },
+    blockchainVerified: {
+        type: Boolean,
+        default: false,  
+    },
 
 })
 
