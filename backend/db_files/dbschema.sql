@@ -75,9 +75,11 @@ CREATE TABLE Transactions (
 CREATE TABLE BankAccounts (
     ID INT PRIMARY KEY,
     BankID INT,
+    UserID STRING,
     BankAccountTypeID INT,
     StatusID INT,
     FOREIGN KEY (BankID) REFERENCES Banks(ID),
+    FOREIGN KEY (UserID) REFERENCES Users(ID),
     FOREIGN KEY (BankAccountTypeID) REFERENCES BankAccountTypes(ID),
     FOREIGN KEY (StatusID) REFERENCES BankAccountStatuses(ID)
 );

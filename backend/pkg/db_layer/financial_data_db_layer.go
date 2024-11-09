@@ -1,17 +1,29 @@
-package dblayer
+package db_layer
 
 import (
 	"database/sql"
 	"hackprinceton/pkg/models"
 )
 
-// Extract Transaction data from the database
-func GetTransactions() []models.Transaction {
+// Extract Transaction data from the database for a given user and transaction
+// If the user ID is empty, return all transactions
+// If only the user ID is provided, return all transactions for that user
+func GetTransactions(userID string, transactionID string) []models.Transaction {
 	// Connect to the database
 	db := ConnectToDB()
 
 	// Query the database
-	rows, err := db.Query("SELECT * FROM transactions")
+	var rows *sql.Rows
+	var err error
+	if userID == "" {
+		rows, err = db.Query("SELECT * FROM transactions")
+	} else {
+		if transactionID == "" {
+			rows, err = db.Query("SELECT * FROM transactions WHERE user_id = ?", userID)
+		} else {
+			rows, err = db.Query("SELECT * FROM transactions WHERE user_id = ? AND id = ?", userID, transactionID)
+		}
+	}
 	if err != nil {
 		panic(err)
 	}
@@ -53,13 +65,25 @@ func GetTransactions() []models.Transaction {
 	return transactions
 }
 
-// Extract AccountBalance data from the database
-func GetAccountBalances() []models.AccountBalance {
+// Extract AccountBalance data from the database for a given user and bank account
+// If the user ID is empty, return all account balances
+// If only the user ID is provided, return all account balances for that user
+func GetAccountBalances(userID string, bankAccountID string) []models.AccountBalance {
 	// Connect to the database
 	db := ConnectToDB()
 
 	// Query the database
-	rows, err := db.Query("SELECT * FROM account_balances")
+	var rows *sql.Rows
+	var err error
+	if userID == "" {
+		rows, err = db.Query("SELECT * FROM accountbalances")
+	} else {
+		if bankAccountID == "" {
+			rows, err = db.Query("SELECT * FROM accountbalances WHERE user_id = ?", userID)
+		} else {
+			rows, err = db.Query("SELECT * FROM accountbalances WHERE user_id = ? AND bank_account_id = ?", userID, bankAccountID)
+		}
+	}
 	if err != nil {
 		panic(err)
 	}
@@ -99,13 +123,20 @@ func GetAccountBalances() []models.AccountBalance {
 	return accountBalances
 }
 
-// Extract BankAccount data from the database
-func GetBankAccounts() []models.BankAccount {
+// Extract BankAccount data from the database for a given bank user
+// If the user ID is empty, return all bank accounts
+func GetBankAccounts(userID string) []models.BankAccount {
 	// Connect to the database
 	db := ConnectToDB()
 
 	// Query the database
-	rows, err := db.Query("SELECT * FROM bank_accounts")
+	var rows *sql.Rows
+	var err error
+	if userID == "" {
+		rows, err = db.Query("SELECT * FROM bankaccounts")
+	} else {
+		rows, err = db.Query("SELECT * FROM bankaccounts WHERE user_id = ?", userID)
+	}
 	if err != nil {
 		panic(err)
 	}
@@ -121,13 +152,12 @@ func GetBankAccounts() []models.BankAccount {
 
 		var bankAccountID sql.NullInt64
 		var bankID sql.NullInt64
+		var userID sql.NullString
 		var bankAccountTypeID sql.NullInt64
 		var statusID sql.NullInt64
-		var accountNumber sql.NullString
-		var routingNumber sql.NullString
 
 		// Scan the row into the bank account
-		err := rows.Scan(&bankAccountID, &bankID, &bankAccountTypeID, &statusID, &accountNumber, &routingNumber)
+		err := rows.Scan(&bankAccountID, &bankID, &userID, &bankAccountTypeID, &statusID)
 		if err != nil {
 			panic(err)
 		}
@@ -135,10 +165,9 @@ func GetBankAccounts() []models.BankAccount {
 		// Set the bank account fields
 		bankAccount.ID = int(bankAccountID.Int64)
 		bankAccount.BankID = int(bankID.Int64)
+		bankAccount.UserID = userID.String
 		bankAccount.BankAccountTypeID = int(bankAccountTypeID.Int64)
 		bankAccount.StatusID = int(statusID.Int64)
-		bankAccount.AccountNumber = accountNumber.String
-		bankAccount.RoutingNumber = routingNumber.String
 
 		// Append the bank account to the slice
 		bankAccounts = append(bankAccounts, bankAccount)
@@ -147,13 +176,20 @@ func GetBankAccounts() []models.BankAccount {
 	return bankAccounts
 }
 
-// Extract Users data from the database
-func GetUsers() []models.User {
+// Extract Users data from the database for a given user
+// If the user ID is empty, return all users
+func GetUsers(userID string) []models.User {
 	// Connect to the database
 	db := ConnectToDB()
 
 	// Query the database
-	rows, err := db.Query("SELECT * FROM users")
+	var rows *sql.Rows
+	var err error
+	if userID == "" {
+		rows, err = db.Query("SELECT * FROM users")
+	} else {
+		rows, err = db.Query("SELECT * FROM users WHERE id = ?", userID)
+	}
 	if err != nil {
 		panic(err)
 	}
@@ -171,9 +207,11 @@ func GetUsers() []models.User {
 		var firstName sql.NullString
 		var lastName sql.NullString
 		var birthdate sql.NullString
+		var email sql.NullString
+		var phoneNumber sql.NullString
 
 		// Scan the row into the user
-		err := rows.Scan(&userID, &firstName, &lastName, &birthdate)
+		err := rows.Scan(&userID, &firstName, &lastName, &birthdate, &email, &phoneNumber)
 		if err != nil {
 			panic(err)
 		}
@@ -183,6 +221,8 @@ func GetUsers() []models.User {
 		user.FirstName = firstName.String
 		user.LastName = lastName.String
 		user.Birthdate = birthdate.String
+		user.Email = email.String
+		user.PhoneNumber = phoneNumber.String
 
 		// Append the user to the slice
 		users = append(users, user)
@@ -191,3 +231,51 @@ func GetUsers() []models.User {
 	return users
 }
 
+// Extract Messages data from the database for a given user
+// If the user ID is empty, return all messages
+func GetMessages(userID string) []models.Message {
+	// Connect to the database
+	db := ConnectToDB()
+
+	// Query the database
+	var rows *sql.Rows
+	var err error
+	if userID == "" {
+		rows, err = db.Query("SELECT * FROM messages")
+	} else {
+		rows, err = db.Query("SELECT * FROM messages WHERE user_id = ?", userID)
+	}
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the messages
+	messages := []models.Message{}
+
+	// Iterate over the rows
+	for rows.Next() {
+		// Create a new message
+		message := models.Message{}
+
+		var messageID sql.NullInt64
+		var userID sql.NullString
+		var content sql.NullString
+
+		// Scan the row into the message
+		err := rows.Scan(&messageID, &userID, &content)
+		if err != nil {
+			panic(err)
+		}
+
+		// Set the message fields
+		message.ID = int(messageID.Int64)
+		message.UserID = userID.String
+		message.Content = content.String
+
+		// Append the message to the slice
+		messages = append(messages, message)
+	}
+
+	return messages
+}

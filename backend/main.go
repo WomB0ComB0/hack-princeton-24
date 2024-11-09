@@ -1,10 +1,8 @@
 package main
 
 import (
-	"context"
-	"database/sql"
 	"fmt"
-	"os"
+	"hackprinceton/pkg/db_layer"
 
 	"github.com/joho/godotenv"
 
@@ -18,29 +16,28 @@ func main() {
 		panic(err)
 	}
 
-	// Get the DSN from the env
-	dsn := os.Getenv("DATABRICKS_DSN")
-
-	fmt.Println("Opening connection...")
-
-	db, err := sql.Open("databricks", dsn)
-	if err != nil {
-		panic(err)
+	balances := db_layer.GetAccountBalances("", "")
+	for _, accountBalance := range balances {
+		println(fmt.Sprintf("Account: %d, Balance: %f", accountBalance.BankAccountID, accountBalance.Amount))
 	}
 
-	rows, err := db.QueryContext(context.Background(), "SELECT * FROM test_table")
-	if err != nil {
-		panic(err)
+	accounts := db_layer.GetBankAccounts("")
+	for _, account := range accounts {
+		println(fmt.Sprintf("Account: %d, User: %s", account.ID, account.UserID))
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		// id and descritpion are the columns in the table
-		var id sql.NullInt64
-		var description sql.NullString
+	transactions := db_layer.GetTransactions("", "")
+	for _, transaction := range transactions {
+		println(fmt.Sprintf("Transaction: %d, User: %s", transaction.ID, transaction.UserID))
+	}
 
-		rows.Scan(&id, &description)
+	messages := db_layer.GetMessages("")
+	for _, message := range messages {
+		println(fmt.Sprintf("Message: %d, User: %s", message.ID, message.UserID))
+	}
 
-		fmt.Printf("id: %d, description: %s\n", id.Int64, description.String)
+	users := db_layer.GetUsers("")
+	for _, user := range users {
+		println(fmt.Sprintf("User: %s %s", user.FirstName, user.LastName))
 	}
 }

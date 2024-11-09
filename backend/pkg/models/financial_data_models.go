@@ -20,6 +20,7 @@ type AccountBalance struct {
 type BankAccount struct {
 	ID                int    `json:"id"`
 	BankID            int    `json:"bank_id"`
+	UserID            string `json:"user_id"`
 	BankAccountTypeID int    `json:"bank_account_type_id"`
 	StatusID          int    `json:"status_id"`
 	AccountNumber     string `json:"account_number"`
@@ -43,21 +44,17 @@ type Bank struct {
 }
 
 type User struct {
-	ID        string `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Birthdate string `json:"birthdate"`
-}
-
-type UserPhoneNumber struct {
-	ID          int    `json:"id"`
-	UserID      int    `json:"user_id"`
+	ID          string `json:"id"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Birthdate   string `json:"birthdate"`
+	Email       string `json:"email"`
 	PhoneNumber string `json:"phone_number"`
 }
 
 type Message struct {
 	ID      int    `json:"id"`
-	UserID  int    `json:"user_id"`
+	UserID  string `json:"user_id"`
 	Content string `json:"content"`
 }
 
