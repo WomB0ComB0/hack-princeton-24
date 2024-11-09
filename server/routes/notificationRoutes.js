@@ -109,11 +109,9 @@ notificationRouter.patch('/:userId/:goalId', async (req, res) => {
     );
 
     if (!updatedNotification) {
-      return res
-        .status(404)
-        .json({
-          message: `No notification found for user ID ${req.params.userId} and goal ID ${req.params.goalId}`,
-        });
+      return res.status(404).json({
+        message: `No notification found for user ID ${req.params.userId} and goal ID ${req.params.goalId}`,
+      });
     }
 
     res.status(200).json(updatedNotification);
@@ -130,11 +128,9 @@ notificationRouter.delete('/:userId/:goalId', async (req, res) => {
     );
 
     if (!notification) {
-      return res
-        .status(404)
-        .json({
-          message: `No notification found for user ID ${req.params.userId} and goal ID ${req.params.goalId}`,
-        });
+      return res.status(404).json({
+        message: `No notification found for user ID ${req.params.userId} and goal ID ${req.params.goalId}`,
+      });
     }
 
     res.status(200).json(notification);
