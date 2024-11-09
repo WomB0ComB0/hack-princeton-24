@@ -10,7 +10,7 @@ import {
 import * as React from 'react';
 import { FiDollarSign, FiMenu, FiX } from 'react-icons/fi';
 
-export const Header = () => {
+export const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
