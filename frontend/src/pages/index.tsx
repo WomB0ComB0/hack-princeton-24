@@ -1,20 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FiBarChart2, FiPieChart, FiDollarSign, FiEdit3, FiDownload, FiLayers, FiArrowRight, FiMove } from 'react-icons/fi';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import   { Reorder, Badge } from 'react-reorder';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import {
+  FiArrowRight,
+  FiBarChart2,
+  FiDollarSign,
+  FiDownload,
+  FiEdit3,
+  FiLayers,
+  FiMove,
+  FiPieChart,
+} from 'react-icons/fi';
+import { Badge, Reorder } from 'react-reorder';
 
 interface ChartItem {
-  id: string
-  type: 'pie' | 'line'
-  title: string
+  id: string;
+  type: 'pie' | 'line';
+  title: string;
 }
 
 export default function IndexPage() {
@@ -80,7 +89,9 @@ export default function IndexPage() {
       {/* Features Section */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">Key Features</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            Key Features
+          </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <FeatureCard
               icon={<FiEdit3 className="w-12 h-12 text-primary" />}
@@ -104,11 +115,16 @@ export default function IndexPage() {
       {/* Demo Section */}
       <section className="py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">See It In Action</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            See It In Action
+          </h2>
           <Card className="p-6">
             <CardContent>
               <div className="mb-6">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
                   Describe your financial report needs:
                 </label>
                 <Textarea
@@ -120,11 +136,11 @@ export default function IndexPage() {
                   rows={4}
                 />
               </div>
-              <Button>
-                Generate Report
-              </Button>
+              <Button>Generate Report</Button>
               <div className="mt-8 border border-gray-200 dark:border-gray-700 rounded-lg p-4 relative">
-                <div className="text-center text-gray-500 dark:text-gray-400 mb-4">Generated Excel Preview</div>
+                <div className="text-center text-gray-500 dark:text-gray-400 mb-4">
+                  Generated Excel Preview
+                </div>
                 <Tabs defaultValue="pie" className="w-full">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="pie">Pie Chart</TabsTrigger>

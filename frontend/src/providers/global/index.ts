@@ -1,1 +1,1 @@
-export * from './zustand-provider'
+export * from './zustand-provider';

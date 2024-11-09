@@ -1,1 +1,1 @@
-export * from './example_pb'
+export * from './example_pb';

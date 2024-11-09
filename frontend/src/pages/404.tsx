@@ -1,28 +1,28 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { FiAlertCircle, FiHome, FiSearch } from 'react-icons/fi'
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { FiAlertCircle, FiHome, FiSearch } from 'react-icons/fi';
 
 export default function NotFound() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [timeLeft, setTimeLeft] = useState(10)
+  const [searchQuery, setSearchQuery] = useState('');
+  const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
     }
-  }, [timeLeft])
+  }, [timeLeft]);
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Implement search functionality here
-    console.log('Searching for:', searchQuery)
-  }
+    console.log('Searching for:', searchQuery);
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
@@ -34,7 +34,9 @@ export default function NotFound() {
       >
         <FiAlertCircle className="text-primary mx-auto mb-6 w-24 h-24" />
         <h1 className="text-4xl font-bold text-foreground mb-2">404 - Page Not Found</h1>
-        <p className="text-xl text-muted-foreground mb-8">Oops! The page you're looking for doesn't exist.</p>
+        <p className="text-xl text-muted-foreground mb-8">
+          Oops! The page you're looking for doesn't exist.
+        </p>
       </motion.div>
 
       <motion.div
@@ -75,5 +77,5 @@ export default function NotFound() {
         </Link>
       </motion.div>
     </div>
-  )
+  );
 }

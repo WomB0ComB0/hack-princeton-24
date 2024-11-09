@@ -1,8 +1,8 @@
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import mkcert from 'vite-plugin-mkcert';
 import tsPaths from 'vite-tsconfig-paths';
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 
 export default defineConfig({
   server: {
