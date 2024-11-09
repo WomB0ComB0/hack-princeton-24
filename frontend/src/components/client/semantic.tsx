@@ -5,7 +5,7 @@ export const Semantic = ({ chidlren }: { chidlren: React.ReactNode }) => {
   return (
     <>
       <Nav />
-        {chidlren}
+      {chidlren}
       <Footer />
     </>
   );
