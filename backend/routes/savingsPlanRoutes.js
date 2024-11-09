@@ -2,8 +2,9 @@ const SavingsPlan = require('../models/savingsPlanSchema.js');
 const express = require('express');
 const savingsPlanRouter = express.Router();
 const mongoose = require('mongoose');
+const authenticateToken = require('../middlewares/authMiddleware.js');
 
-savingsPlanRouter.get('/:goalId', async (req, res) => {
+savingsPlanRouter.get('/:goalId', authenticateToken, async (req, res) => {
     try {
         const savingsPlan = await SavingsPlan.findOne({ goalId: ObjectId(req.params.goalId) });
 
@@ -18,7 +19,7 @@ savingsPlanRouter.get('/:goalId', async (req, res) => {
 });
 
 // Track progress toward savings goal
-savingsPlanRouter.get('/:goalId/progress', async (req, res) => {
+savingsPlanRouter.get('/:goalId/progress', authenticateToken, async (req, res) => {
     try {
         const plan = await SavingsPlan.findOne({ goalId: ObjectId(req.params.goalId) });
         if (!plan) return res.status(404).json({ message: 'Savings plan not found.' });
@@ -30,7 +31,7 @@ savingsPlanRouter.get('/:goalId/progress', async (req, res) => {
     }
 });
 
-savingsPlanRouter.post('/:goalId', async (req, res) => {
+savingsPlanRouter.post('/:goalId', authenticateToken, async (req, res) => {
  const { frequency, amount, startDate, nextContributionDate } = req.body;
 
     const savingsPlan = new SavingsPlan({
@@ -49,7 +50,7 @@ savingsPlanRouter.post('/:goalId', async (req, res) => {
     }
 });
 
-savingsPlanRouter.patch('/:goalId', async (req, res) => {
+savingsPlanRouter.patch('/:goalId', authenticateToken, async (req, res) => {
     try {
         const updatedSavingsPlan = await SavingsPlan.findOne(
             { goalId: ObjectId(req.params.goalId) },
@@ -67,7 +68,7 @@ savingsPlanRouter.patch('/:goalId', async (req, res) => {
     }
 });
 
-savingsPlanRouter.delete('/:goalId', async (req, res) => {
+savingsPlanRouter.delete('/:goalId', authenticateToken, async (req, res) => {
     try {
         const savingsPlan = await SavingsPlan.findOneAndDelete({ goalId: ObjectId(req.params.goalId) });
         res.status(200).json(savingsPlan);

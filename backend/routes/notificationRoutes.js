@@ -3,9 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const notificationRouter = express.Router();
 const cron = require('node-cron');
+const authenticateToken = require('../middlewares/authMiddleware.js');
 
 
-notificationRouter.get('/:userId', async (req, res) => {
+notificationRouter.get('/:userId', authenticateToken, async (req, res) => {
     try {
         const notification = await Notification.find({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
 
@@ -19,7 +20,7 @@ notificationRouter.get('/:userId', async (req, res) => {
     }
 });
 
-notificationRouter.get('/:userId/:goalId', async (req, res) => {
+notificationRouter.get('/:userId/:goalId', authenticateToken, async (req, res) => {
     try {
         const notification = await Notification.find(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -37,7 +38,7 @@ notificationRouter.get('/:userId/:goalId', async (req, res) => {
 });
 
 
-notificationRouter.post('/:userId/:goalId', async (req, res) => {
+notificationRouter.post('/:userId/:goalId', authenticateToken, async (req, res) => {
     const { notificationType, dateScheduled, message } = req.body;
 
     const notification = new Notification({
@@ -67,7 +68,7 @@ notificationRouter.post('/:userId/:goalId', async (req, res) => {
 });
 
 // Update notification by userId and goalId
-notificationRouter.patch('/:userId/:goalId', async (req, res) => {
+notificationRouter.patch('/:userId/:goalId', authenticateToken, async (req, res) => {
     const allowedUpdates = ['notificationType', 'dateScheduled', 'message'];
     const updates = {};
 
@@ -105,7 +106,7 @@ notificationRouter.patch('/:userId/:goalId', async (req, res) => {
     }
 });
 
-notificationRouter.delete('/:userId/:goalId', async (req, res) => {
+notificationRouter.delete('/:userId/:goalId', authenticateToken, async (req, res) => {
     try {
         const notification = await Notification.findOneAndDelete(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -124,7 +125,7 @@ notificationRouter.delete('/:userId/:goalId', async (req, res) => {
 
 
 // Bulk delete notifications by scheduled date
-notificationRouter.delete('/:userId', async (req, res) => {
+notificationRouter.delete('/:userId', authenticateToken, async (req, res) => {
     try {
         const result = await Notification.deleteMany({ dateScheduled: { $lte: req.body.date } });
         res.status(200).json(result);

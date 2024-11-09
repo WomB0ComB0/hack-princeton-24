@@ -5,8 +5,9 @@ const transactionRouter = express.Router();
 require('dotenv').config();
 const apiKey = process.env.VERBWIRE_API_KEY;
 const verbwire = require('verbwire')(apiKey);
+const authenticateToken = require('../middlewares/authMiddleware.js');
 
-transactionRouter.get('/:userId', async (req, res) => {
+transactionRouter.get('/:userId', authenticateToken, async (req, res) => {
     
     try {
         const transactions = await Transaction.find({ userId: new mongoose.Types.ObjectId(req.params.userId.trim())});
@@ -16,7 +17,7 @@ transactionRouter.get('/:userId', async (req, res) => {
     }
 });
 
-transactionRouter.get('/:userId/:goalId', async (req, res) => {
+transactionRouter.get('/:userId/:goalId', authenticateToken, async (req, res) => {
     try {
         const transactions = await Transaction.find(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -29,7 +30,7 @@ transactionRouter.get('/:userId/:goalId', async (req, res) => {
     }
 });
 
-transactionRouter.get('/:userId/:goalId/summary', async (req, res) => {
+transactionRouter.get('/:userId/:goalId/summary', authenticateToken, async (req, res) => {
     try {
 
         
@@ -58,7 +59,7 @@ transactionRouter.get('/:userId/:goalId/summary', async (req, res) => {
     }
 });
 
-transactionRouter.get('/:userId/summary', async (req, res) => {
+transactionRouter.get('/:userId/summary', authenticateToken, async (req, res) => {
     try {
         const userId = req.params;
         const { transactionType, date } = req.query;
@@ -86,7 +87,7 @@ transactionRouter.get('/:userId/summary', async (req, res) => {
 });
 
 
-transactionRouter.post('/:userId/:goalId', async (req, res) => {
+transactionRouter.post('/:userId/:goalId', authenticateToken, async (req, res) => {
     const { amount, transactionType, date, description } = req.body;
 
     const transaction = new Transaction({

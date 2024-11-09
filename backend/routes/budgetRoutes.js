@@ -2,10 +2,10 @@ const express = require('express');
 const Budget = require('../models/budgetSchema');
 const budgetRouter = express.Router();
 const mongoose = require('mongoose');
-
+const authenticateToken = require('../middlewares/authMiddleware.js');
 
 // Get a budget summary grouped by categories
-budgetRouter.get('/:userId/summary', async (req, res) => {
+budgetRouter.get('/:userId/summary', authenticateToken, async (req, res) => {
     try {
         const budgets = await Budget.aggregate([
             { $match: { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) } },
@@ -40,7 +40,7 @@ budgetRouter.get('/:userId/summary', async (req, res) => {
 });
 
 // Get all budgets for a specific user
-budgetRouter.get('/:userId', async (req, res) => {
+budgetRouter.get('/:userId', authenticateToken, async (req, res) => {
     try {
         const budgets = await Budget.find({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
         res.status(200).json(budgets);
@@ -51,7 +51,7 @@ budgetRouter.get('/:userId', async (req, res) => {
 
 
 // Update a budget
-budgetRouter.put('/:userId', async (req, res) => {
+budgetRouter.put('/:userId', authenticateToken, async (req, res) => {
     try {
         const updatedBudget = await Budget.findOneAndUpdate(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -65,7 +65,7 @@ budgetRouter.put('/:userId', async (req, res) => {
 });
 
 // Update budget by fields
-budgetRouter.patch('/:userId', async (req, res) => {
+budgetRouter.patch('/:userId', authenticateToken, async (req, res) => {
     try {
         const updatedBudget = await Budget.findOne(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -82,7 +82,7 @@ budgetRouter.patch('/:userId', async (req, res) => {
 });
 
 // Delete a budget by ID
-budgetRouter.delete('/:userId', async (req, res) => {
+budgetRouter.delete('/:userId', authenticateToken, async (req, res) => {
     try {
         await Budget.findOneAndDelete({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
         res.status(204).send();

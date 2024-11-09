@@ -2,10 +2,11 @@ const Milestone = require('../models/milestoneSchema.js');
 const express = require('express');
 const milestoneRouter = express.Router();
 const mongoose = require('mongoose');
+const authenticateToken = require('../middlewares/authMiddleware.js');
 
 
 // Get all milestones for user
-milestoneRouter.get('/:userId', async (req, res) => {
+milestoneRouter.get('/:userId', authenticateToken, async (req, res) => {
     try {
         const milestones = await Milestone.find({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
 
@@ -20,7 +21,7 @@ milestoneRouter.get('/:userId', async (req, res) => {
 });
 
 // Get milestone by goalId for user
-milestoneRouter.get('/:userId/:goalId', async (req, res) => {
+milestoneRouter.get('/:userId/:goalId', authenticateToken, async (req, res) => {
     try {
         const milestone = await Milestone.find(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -38,7 +39,7 @@ milestoneRouter.get('/:userId/:goalId', async (req, res) => {
 });
 
 // Create a new milestone
-milestoneRouter.post('/:userId/:goalId', async (req, res) => {
+milestoneRouter.post('/:userId/:goalId', authenticateToken, async (req, res) => {
     const { name, description, targetAmount, deadline } = req.body;
 
     try {
@@ -63,7 +64,7 @@ milestoneRouter.post('/:userId/:goalId', async (req, res) => {
 });
 
 // Update milestone by goalId
-milestoneRouter.patch('/:userId/:goalId', async (req, res) => {
+milestoneRouter.patch('/:userId/:goalId', authenticateToken, async (req, res) => {
     try {
         const updatedMilestone = await Milestone.findOneAndUpdate(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -84,7 +85,7 @@ milestoneRouter.patch('/:userId/:goalId', async (req, res) => {
 
 
 // Get milestones in sequence order
-milestoneRouter.get('/:userId/:goalId/ordered', async (req, res) => {
+milestoneRouter.get('/:userId/:goalId/ordered', authenticateToken, async (req, res) => {
     try {
         const milestones = await Milestone.find(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -97,7 +98,7 @@ milestoneRouter.get('/:userId/:goalId/ordered', async (req, res) => {
 });
 
 // Delete milestone by goalId for a user
-milestoneRouter.delete('/:userId/:goalId', async (req, res) => {
+milestoneRouter.delete('/:userId/:goalId', authenticateToken, async (req, res) => {
     try {
         const milestone = await Milestone.findOneAndDelete(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },

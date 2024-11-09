@@ -2,10 +2,10 @@ const Goal = require('../models/goalSchema.js');
 const express = require('express');
 const goalRouter = express.Router();
 const mongoose = require('mongoose');
-
+const authenticateToken = require('../middlewares/authMiddleware.js');
 
 // get all progress for all goals for a user
-goalRouter.get('/:userId/progress', async (req, res) => {
+goalRouter.get('/:userId/progress', authenticateToken, async (req, res) => {
     try {
         const goal = await Goal.find({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
         if (!goal) return res.status(404).json({ message: 'Goal not found' });
@@ -17,7 +17,7 @@ goalRouter.get('/:userId/progress', async (req, res) => {
 });
 
 // get all goals for a user
-goalRouter.get('/:userId', async (req, res) => {
+goalRouter.get('/:userId', authenticateToken, async (req, res) => {
     try {
         const userGoals = await Goal.find({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
 
@@ -31,7 +31,7 @@ goalRouter.get('/:userId', async (req, res) => {
     }
 });
 
-goalRouter.post('/:userId', async (req, res) => {
+goalRouter.post('/:userId', authenticateToken, async (req, res) => {
 
     const { name, targetAmount, currentAmount, startDate, targetDate, priorityLevel } = req.body;
 
@@ -53,7 +53,7 @@ goalRouter.post('/:userId', async (req, res) => {
     }
 });
 
-goalRouter.patch('/:userId', async (req, res) => {
+goalRouter.patch('/:userId', authenticateToken, async (req, res) => {
     try {
         const updatedGoal = await Goal.findOneAndUpdate(
             { userId: new mongoose.Types.ObjectId(req.params.userId.trim()) },
@@ -71,7 +71,7 @@ goalRouter.patch('/:userId', async (req, res) => {
     }
 });
 
-goalRouter.delete('/:userId', async (req, res) => {
+goalRouter.delete('/:userId', authenticateToken, async (req, res) => {
     try {
         const goal = await Goal.findOneAndDelete({ userId: new mongoose.Types.ObjectId(req.params.userId.trim()) });
         res.status(200).send();
