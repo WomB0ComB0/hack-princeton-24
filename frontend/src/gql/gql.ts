@@ -9,7 +9,17 @@ const documents = {
     types.FilmItemFragmentDoc,
 };
 
-export function graphql(
+export function graphql(import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+/* eslint-disable */
+import * as types from './graphql';
+
+const documents = {
+  '\n  query allFilmsWithVariablesQuery($first: Int!) {\n    allFilms(first: $first) {\n      edges {\n        node {\n          ...FilmItem\n        }\n      }\n    }\n  }\n':
+    types.AllFilmsWithVariablesQueryDocument,
+  '\n  fragment FilmItem on Film {\n    id\n    title\n    releaseDate\n    producers\n  }\n':
+    types.FilmItemFragmentDoc,
+};
+
   source: '\n  query allFilmsWithVariablesQuery($first: Int!) {\n    allFilms(first: $first) {\n      edges {\n        node {\n          ...FilmItem\n        }\n      }\n    }\n  }\n',
 ): (typeof documents)['\n  query allFilmsWithVariablesQuery($first: Int!) {\n    allFilms(first: $first) {\n      edges {\n        node {\n          ...FilmItem\n        }\n      }\n    }\n  }\n'];
 export function graphql(
