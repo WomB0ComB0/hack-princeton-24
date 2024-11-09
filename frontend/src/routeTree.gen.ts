@@ -8,11 +8,16 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router';
+
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as R404Import } from './routes/404'
-import { Route as IndexImport } from './routes/index'
+import { Route as R404Import } from './routes/404';
+import { Route as rootRoute } from './routes/__root';
+
+// Create Virtual Routes
+
+const IndexLazyImport = createFileRoute('/')();
 
 // Create/Update Routes
 
@@ -20,75 +25,75 @@ const R404Route = R404Import.update({
   id: '/404',
   path: '/404',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
-const IndexRoute = IndexImport.update({
+const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route));
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexLazyImport;
+      parentRoute: typeof rootRoute;
+    };
     '/404': {
-      id: '/404'
-      path: '/404'
-      fullPath: '/404'
-      preLoaderRoute: typeof R404Import
-      parentRoute: typeof rootRoute
-    }
+      id: '/404';
+      path: '/404';
+      fullPath: '/404';
+      preLoaderRoute: typeof R404Import;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/404': typeof R404Route
+  '/': typeof IndexLazyRoute;
+  '/404': typeof R404Route;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/404': typeof R404Route
+  '/': typeof IndexLazyRoute;
+  '/404': typeof R404Route;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/404': typeof R404Route
+  __root__: typeof rootRoute;
+  '/': typeof IndexLazyRoute;
+  '/404': typeof R404Route;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/404'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404'
-  id: '__root__' | '/' | '/404'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: '/' | '/404';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/404';
+  id: '__root__' | '/' | '/404';
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  R404Route: typeof R404Route
+  IndexLazyRoute: typeof IndexLazyRoute;
+  R404Route: typeof R404Route;
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  IndexLazyRoute: IndexLazyRoute,
   R404Route: R404Route,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -101,7 +106,7 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.tsx"
+      "filePath": "index.lazy.tsx"
     },
     "/404": {
       "filePath": "404.tsx"

@@ -69,7 +69,7 @@ export default function NotFound() {
         <p className="text-muted-foreground mb-4">
           You will be redirected to the homepage in {timeLeft} seconds.
         </p>
-        <Link href="/" passHref>
+        <Link href="/">
           <Button variant="outline" className="flex items-center">
             <FiHome className="mr-2" />
             Go to Homepage
