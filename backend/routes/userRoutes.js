@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const authenticateToken = require('../middlewares/authMiddleware.js');
 
 // Get user by Id
-userRouter.get('/:userId', async (req, res) => {
+userRouter.get('/:userId', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(new mongoose.Types.ObjectId(req.params.userId.trim()));
 
@@ -21,7 +21,7 @@ userRouter.get('/:userId', async (req, res) => {
 });
 
 // Update a user
-userRouter.patch('/:userId', async (req, res) => {
+userRouter.patch('/:userId', authenticateToken, async (req, res) => {
     updates = {};
 
     Object.keys(req.body).forEach((key) => {
@@ -48,7 +48,7 @@ userRouter.patch('/:userId', async (req, res) => {
 });
 
 // Delete a user
-userRouter.delete('/:userId', async (req, res) => {
+userRouter.delete('/:userId', authenticateToken, async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(new mongoose.Types.ObjectId(req.params.userId.trim()));;
         res.status(200).json(user);
@@ -62,7 +62,8 @@ userRouter.post('/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = new User({
-            ...req.body,
+            username: req.body.username,
+            email: req.body.email,
             passwordHash: hashedPassword
         });
         const newUser = await user.save();
