@@ -64,11 +64,13 @@ CREATE TABLE Transactions (
     UserID INT,
     TransactionTypeID INT,
     CurrencyID INT,
+    TransactionStatusID INT,
     Amount DECIMAL(15, 2),
     DateTime TIMESTAMP,
     FOREIGN KEY (UserID) REFERENCES Users(ID),
     FOREIGN KEY (TransactionTypeID) REFERENCES TransactionTypes(ID),
-    FOREIGN KEY (CurrencyID) REFERENCES Currencies(ID)
+    FOREIGN KEY (CurrencyID) REFERENCES Currencies(ID),
+    FOREIGN KEY (TransactionStatusID) REFERENCES TransactionStatuses(ID)
 );
 
 -- Create table for BankAccounts

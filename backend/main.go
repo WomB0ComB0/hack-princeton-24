@@ -3,7 +3,11 @@ package main
 import (
 	"fmt"
 	"hackprinceton/pkg/db_layer"
+	graphqllayer "hackprinceton/pkg/graphql"
+	"net/http"
 
+	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/handler"
 	"github.com/joho/godotenv"
 
 	_ "github.com/databricks/databricks-sql-go"
@@ -40,4 +44,24 @@ func main() {
 	for _, user := range users {
 		println(fmt.Sprintf("User: %s %s", user.FirstName, user.LastName))
 	}
+
+	schema, err := graphql.NewSchema(graphql.SchemaConfig{
+		Query: graphqllayer.QueryType,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Create a new GraphQL handler
+	h := handler.New(&handler.Config{
+		Schema:   &schema,
+		Pretty:   true,
+		GraphiQL: true,
+	})
+
+	http.Handle("/graphql", h)
+
+	fmt.Println("Server is running on port 8080")
+	http.ListenAndServe(":8080", nil)
 }

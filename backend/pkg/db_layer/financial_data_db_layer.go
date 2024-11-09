@@ -12,16 +12,32 @@ func GetTransactions(userID string, transactionID string) []models.Transaction {
 	// Connect to the database
 	db := ConnectToDB()
 
+	sqlQuery := `SELECT
+	transactions.id,
+	users.id AS userid,
+	CONCAT(users.FirstName, ' ', users.LastName) AS username,
+	transactiontypes.id AS transaction_type_id,
+	transactiontypes.name AS transaction_type,
+	currencies.id AS currency_id,
+	currencies.symbol AS currency,
+	transactions.amount,
+	transactions.datetime
+	FROM transactions
+	INNER JOIN users ON transactions.userid = users.id
+	INNER JOIN transactiontypes ON transactions.transactiontypeid = transactiontypes.id
+	INNER JOIN currencies ON transactions.currencyid = currencies.id
+	`
+
 	// Query the database
 	var rows *sql.Rows
 	var err error
 	if userID == "" {
-		rows, err = db.Query("SELECT * FROM transactions")
+		rows, err = db.Query(sqlQuery)
 	} else {
 		if transactionID == "" {
-			rows, err = db.Query("SELECT * FROM transactions WHERE user_id = ?", userID)
+			rows, err = db.Query(sqlQuery+" WHERE transactions.userid = ?", userID)
 		} else {
-			rows, err = db.Query("SELECT * FROM transactions WHERE user_id = ? AND id = ?", userID, transactionID)
+			rows, err = db.Query(sqlQuery+" WHERE transactions.userid = ? AND transactions.id = ?", userID, transactionID)
 		}
 	}
 	if err != nil {
@@ -37,24 +53,30 @@ func GetTransactions(userID string, transactionID string) []models.Transaction {
 		// Create a new transaction
 		transaction := models.Transaction{}
 
-		var transactionID sql.NullInt64
+		var transactionID sql.NullString
 		var userID sql.NullString
+		var username sql.NullString
 		var transactionTypeID sql.NullInt64
+		var transactionType sql.NullString
 		var currencyID sql.NullInt64
+		var currency sql.NullString
 		var amount sql.NullFloat64
 		var dateTime sql.NullString
 
 		// Scan the row into the transaction
-		err := rows.Scan(&transactionID, &userID, &transactionTypeID, &currencyID, &amount, &dateTime)
+		err := rows.Scan(&transactionID, &userID, &username, &transactionTypeID, &transactionType, &currencyID, &currency, &amount, &dateTime)
 		if err != nil {
 			panic(err)
 		}
 
 		// Set the transaction fields
-		transaction.ID = int(transactionID.Int64)
+		transaction.ID = transactionID.String
 		transaction.UserID = userID.String
+		transaction.Username = username.String
 		transaction.TransactionTypeID = int(transactionTypeID.Int64)
+		transaction.TransactionType = transactionType.String
 		transaction.CurrencyID = int(currencyID.Int64)
+		transaction.Currency = currency.String
 		transaction.Amount = amount.Float64
 		transaction.DateTime = dateTime.String
 
@@ -79,9 +101,9 @@ func GetAccountBalances(userID string, bankAccountID string) []models.AccountBal
 		rows, err = db.Query("SELECT * FROM accountbalances")
 	} else {
 		if bankAccountID == "" {
-			rows, err = db.Query("SELECT * FROM accountbalances WHERE user_id = ?", userID)
+			rows, err = db.Query("SELECT * FROM accountbalances WHERE userid = ?", userID)
 		} else {
-			rows, err = db.Query("SELECT * FROM accountbalances WHERE user_id = ? AND bank_account_id = ?", userID, bankAccountID)
+			rows, err = db.Query("SELECT * FROM accountbalances WHERE userid = ? AND bankaccountid = ?", userID, bankAccountID)
 		}
 	}
 	if err != nil {
@@ -98,7 +120,7 @@ func GetAccountBalances(userID string, bankAccountID string) []models.AccountBal
 		accountBalance := models.AccountBalance{}
 
 		var accountBalanceID sql.NullInt64
-		var bankAccountID sql.NullInt64
+		var bankAccountID sql.NullString
 		var currencyID sql.NullInt64
 		var amount sql.NullFloat64
 		var dateTime sql.NullString
@@ -111,7 +133,7 @@ func GetAccountBalances(userID string, bankAccountID string) []models.AccountBal
 
 		// Set the account balance fields
 		accountBalance.ID = int(accountBalanceID.Int64)
-		accountBalance.BankAccountID = int(bankAccountID.Int64)
+		accountBalance.BankAccountID = bankAccountID.String
 		accountBalance.CurrencyID = int(currencyID.Int64)
 		accountBalance.Amount = amount.Float64
 		accountBalance.DateTime = dateTime.String
@@ -135,7 +157,7 @@ func GetBankAccounts(userID string) []models.BankAccount {
 	if userID == "" {
 		rows, err = db.Query("SELECT * FROM bankaccounts")
 	} else {
-		rows, err = db.Query("SELECT * FROM bankaccounts WHERE user_id = ?", userID)
+		rows, err = db.Query("SELECT * FROM bankaccounts WHERE userid = ?", userID)
 	}
 	if err != nil {
 		panic(err)
@@ -150,8 +172,8 @@ func GetBankAccounts(userID string) []models.BankAccount {
 		// Create a new bank account
 		bankAccount := models.BankAccount{}
 
-		var bankAccountID sql.NullInt64
-		var bankID sql.NullInt64
+		var bankAccountID sql.NullString
+		var bankID sql.NullString
 		var userID sql.NullString
 		var bankAccountTypeID sql.NullInt64
 		var statusID sql.NullInt64
@@ -163,8 +185,8 @@ func GetBankAccounts(userID string) []models.BankAccount {
 		}
 
 		// Set the bank account fields
-		bankAccount.ID = int(bankAccountID.Int64)
-		bankAccount.BankID = int(bankID.Int64)
+		bankAccount.ID = bankAccountID.String
+		bankAccount.BankID = bankID.String
 		bankAccount.UserID = userID.String
 		bankAccount.BankAccountTypeID = int(bankAccountTypeID.Int64)
 		bankAccount.StatusID = int(statusID.Int64)
@@ -243,7 +265,7 @@ func GetMessages(userID string) []models.Message {
 	if userID == "" {
 		rows, err = db.Query("SELECT * FROM messages")
 	} else {
-		rows, err = db.Query("SELECT * FROM messages WHERE user_id = ?", userID)
+		rows, err = db.Query("SELECT * FROM messages WHERE userid = ?", userID)
 	}
 	if err != nil {
 		panic(err)
