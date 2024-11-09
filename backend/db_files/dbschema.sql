@@ -76,7 +76,7 @@ CREATE TABLE Transactions (
 -- Create table for BankAccounts
 CREATE TABLE BankAccounts (
     ID VARCHAR(50) PRIMARY KEY,
-    BankID INT,
+    BankID VARCHAR(50),
     UserID VARCHAR(50),
     BankAccountTypeID INT,
     StatusID INT,
@@ -89,8 +89,8 @@ CREATE TABLE BankAccounts (
 
 -- Create table for AccountBalances
 CREATE TABLE AccountBalances (
-    ID INT PRIMARY KEY IDENTITY,
-    BankAccountID INT,
+    ID INT PRIMARY KEY,
+    BankAccountID VARCHAR(50),
     CurrencyID INT,
     Amount DECIMAL(15, 2),
     DateTime TIMESTAMP,
