@@ -8,7 +8,7 @@ async function fetchBankAccounts(): Promise<bankAccount[]> {
 
     const response = await fetch('http://localhost:8080/graphql');
 
-    if (!response) {
+    if (!response.ok) {
         throw new Error('Error fetching bank accounts');
     }
 
