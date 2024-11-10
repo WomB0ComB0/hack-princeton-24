@@ -39,7 +39,7 @@ const menuItems = [
 ];
 
 const SidebarMenuItems = memo(() => (
-  <SidebarMeznu>
+  <SidebarMenu>
     {menuItems.map((item) => (
       <SidebarMenuItem key={item.to}>
         <SidebarMenuButton asChild>
@@ -60,7 +60,7 @@ const SidebarMenuItems = memo(() => (
         </SidebarMenuButton>
       </SidebarMenuItem>
     ))}
-  </SidebarMeznu>
+  </SidebarMenu>
 ));
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {

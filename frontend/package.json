@@ -6,7 +6,6 @@
     "build": "bunx tsr generate && turbo vite.build",
     "codegen": "graphql-codegen --config codegen.ts",
     "dev": "bunx tsr generate && concurrently 'bunx tsr watch' 'turbo vite.dev'",
-    "postinstall": "bunx buf generate",
     "lint": "tsc",
     "prepare": "is-ci || husky install",
     "preview": "turbo vite.preview",
