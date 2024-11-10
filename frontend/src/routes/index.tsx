@@ -19,8 +19,7 @@ import {
   FiMove,
   FiPieChart,
 } from 'react-icons/fi';
-import { UserProvider } from './user_context';
-
+import { ChatbotComponent } from '@/components/client'
 interface ChartItem {
   id: string;
   type: 'pie' | 'line';
@@ -180,7 +179,7 @@ function IndexComponent() {
           </Button>
         </div>
       </section>
-
+      <ChatbotComponent />
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
