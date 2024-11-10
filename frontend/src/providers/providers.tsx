@@ -15,7 +15,7 @@ const Providers: React.FC<
         providers={[
           [ThemeProvider, {}],
           [QueryProvider, {}],
-          // [AuthProvider, {}],
+          [AuthProvider, {}],
           [GlobalStoreProvider, {}],
           [Events, {}],
         ]}
