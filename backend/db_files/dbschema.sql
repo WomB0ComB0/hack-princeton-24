@@ -78,7 +78,7 @@ CREATE TABLE Transactions (
     FOREIGN KEY (TransactionTypeID) REFERENCES TransactionTypes(ID),
     FOREIGN KEY (CurrencyID) REFERENCES Currencies(ID),
     FOREIGN KEY (TransactionStatusID) REFERENCES TransactionStatuses(ID),
-    FOREIGN KEY (CategoryID) REFERENCES TransactionCategories(ID)
+    FOREIGN KEY (TransactionCategoryID) REFERENCES TransactionCategories(ID)
 );
 
 -- Create table for BankAccounts
@@ -104,4 +104,23 @@ CREATE TABLE AccountBalances (
     DateTime TIMESTAMP,
     FOREIGN KEY (BankAccountID) REFERENCES BankAccounts(ID),
     FOREIGN KEY (CurrencyID) REFERENCES Currencies(ID)
+);
+
+-- Create table for SecurityTypes
+CREATE TABLE SecurityTypes (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+-- Create table for Secirity Assets
+CREATE TABLE SecurityAssets (
+    ID VARCHAR(50) PRIMARY KEY,
+    UserID VARCHAR(50),
+    BankAccountID VARCHAR(50),
+    Symbol VARCHAR(50),
+    Quantity DECIMAL(15, 2),
+    SecurityTypeID INT,
+    FOREIGN KEY (UserID) REFERENCES Users(ID),
+    FOREIGN KEY (SecurityTypeID) REFERENCES SecurityTypes(ID),
+    FOREIGN KEY (BankAccountID) REFERENCES BankAccounts(ID)
 );

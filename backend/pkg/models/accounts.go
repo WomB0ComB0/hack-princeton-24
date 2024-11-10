@@ -1,26 +1,19 @@
 package models
 
 type AccountBalance struct {
-	ID            int     `json:"id"`
-	BankAccountID string  `json:"bank_account_id"`
-	BankID        string  `json:"bank_id"`
-	Bank          string  `json:"bank_name"`
-	CurrencyID    int     `json:"currency_id"`
-	Currency      string  `json:"currency"`
-	Amount        float64 `json:"amount"`
-	DateTime      string  `json:"date_time"`
+	ID          int         `json:"id"`
+	BankAccount BankAccount `json:"bank_account"`
+	Currency    Currency    `json:"currency"`
+	Amount      float64     `json:"amount"`
+	DateTime    string      `json:"date_time"`
 }
 
 type BankAccount struct {
-	ID                string `json:"id"`
-	BankID            string `json:"bank_id"`
-	Bank              string `json:"bank_name"`
-	UserID            string `json:"user_id"`
-	Username          string `json:"username"`
-	BankAccountTypeID int    `json:"bank_account_type_id"`
-	BankAccountType   string `json:"bank_account_type"`
-	StatusID          int    `json:"status_id"`
-	Status            string `json:"status"`
+	ID                string            `json:"id"`
+	User              User              `json:"user"`
+	Bank              Bank              `json:"bank"`
+	BankAccountType   BankAccountType   `json:"bank_account_type"`
+	BankAccountStatus BankAccountStatus `json:"bank_account_status"`
 }
 
 type BankAccountType struct {

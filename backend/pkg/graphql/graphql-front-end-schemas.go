@@ -12,58 +12,40 @@ var accountType = graphql.NewObject(graphql.ObjectConfig{
 		"id": &graphql.Field{
 			Type: graphql.String,
 		},
-		"userID": &graphql.Field{
-			Type: graphql.String,
-		},
-		"username": &graphql.Field{
-			Type: graphql.String,
-		},
-		"bankAccountTypeID": &graphql.Field{
-			Type: graphql.Int,
-		},
-		"bankAccountType": &graphql.Field{
-			Type: graphql.String,
-		},
-		"statusID": &graphql.Field{
-			Type: graphql.Int,
-		},
-		"status": &graphql.Field{
-			Type: graphql.String,
-		},
-		"bankID": &graphql.Field{
-			Type: graphql.String,
+		"user": &graphql.Field{
+			Type: userType,
 		},
 		"bank": &graphql.Field{
+			Type: bankType,
+		},
+		"bankAccountType": &graphql.Field{
+			Type: bankAccountTypeType,
+		},
+		"bankAccountStatus": &graphql.Field{
+			Type: bankAccountStatusType,
+		},
+	},
+})
+
+var bankAccountTypeType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "BankAccountType",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"name": &graphql.Field{
 			Type: graphql.String,
 		},
 	},
 })
 
-var balanceType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Balance",
+var bankAccountStatusType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "BankAccountStatus",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{
 			Type: graphql.Int,
 		},
-		"bankAccountID": &graphql.Field{
-			Type: graphql.String,
-		},
-		"bankID": &graphql.Field{
-			Type: graphql.String,
-		},
-		"bank": &graphql.Field{
-			Type: graphql.String,
-		},
-		"currencyID": &graphql.Field{
-			Type: graphql.Int,
-		},
-		"currency": &graphql.Field{
-			Type: graphql.String,
-		},
-		"amount": &graphql.Field{
-			Type: graphql.Float,
-		},
-		"dateTime": &graphql.Field{
+		"name": &graphql.Field{
 			Type: graphql.String,
 		},
 	},
@@ -75,29 +57,17 @@ var transactionType = graphql.NewObject(graphql.ObjectConfig{
 		"id": &graphql.Field{
 			Type: graphql.String,
 		},
-		"userID": &graphql.Field{
-			Type: graphql.String,
+		"user": &graphql.Field{
+			Type: userType,
 		},
-		"username": &graphql.Field{
-			Type: graphql.String,
+		"transactionStatus": &graphql.Field{
+			Type: transactionStatusType,
 		},
 		"transactionType": &graphql.Field{
-			Type: graphql.String,
+			Type: transactionTypeType,
 		},
-		"transactionTypeID": &graphql.Field{
-			Type: graphql.Int,
-		},
-		"category": &graphql.Field{
-			Type: graphql.String,
-		},
-		"categoryID": &graphql.Field{
-			Type: graphql.Int,
-		},
-		"currency": &graphql.Field{
-			Type: graphql.String,
-		},
-		"currencyID": &graphql.Field{
-			Type: graphql.Int,
+		"transactionCategory": &graphql.Field{
+			Type: transactionCategoryType,
 		},
 		"amount": &graphql.Field{
 			Type: graphql.Float,
@@ -108,19 +78,118 @@ var transactionType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
-var messageType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "Message",
+var transactionStatusType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "TransactionStatus",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{
 			Type: graphql.Int,
 		},
-		"userID": &graphql.Field{
+		"name": &graphql.Field{
 			Type: graphql.String,
 		},
-		"username": &graphql.Field{
+	},
+})
+
+var transactionTypeType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "TransactionType",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"name": &graphql.Field{
 			Type: graphql.String,
 		},
-		"content": &graphql.Field{
+	},
+})
+
+var transactionCategoryType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "TransactionCategory",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"name": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
+var securitiesType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "SecurityAssets",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"bankAccount": &graphql.Field{
+			Type: accountType,
+		},
+		"symbol": &graphql.Field{
+			Type: graphql.String,
+		},
+		"quantity": &graphql.Field{
+			Type: graphql.Float,
+		},
+		"securityType": &graphql.Field{
+			Type: securityTypesType,
+		},
+	},
+})
+
+var securityTypesType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "SecurityTypes",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"name": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
+var balanceType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Balance",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.String,
+		},
+		"bankAccount": &graphql.Field{
+			Type: accountType,
+		},
+		"currency": &graphql.Field{
+			Type: currencyType,
+		},
+		"amount": &graphql.Field{
+			Type: graphql.Float,
+		},
+		"dateTime": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
+var bankType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Bank",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.String,
+		},
+		"name": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
+var currencyType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Currency",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"symbol": &graphql.Field{
+			Type: graphql.String,
+		},
+		"description": &graphql.Field{
 			Type: graphql.String,
 		},
 	},
@@ -150,6 +219,21 @@ var userType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var messageType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Message",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"user": &graphql.Field{
+			Type: userType,
+		},
+		"content": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
 var QueryType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Query",
 	Fields: graphql.Fields{
@@ -161,15 +245,7 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var userID string
-
-				if p.Args["userID"] != nil {
-					userID = p.Args["userID"].(string)
-				} else {
-					userID = ""
-				}
-
-				return db_layer.GetBankAccounts(userID), nil
+				return db_layer.GetBankAccounts(p.Args), nil
 			},
 		},
 		"balances": &graphql.Field{
@@ -181,24 +257,18 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 				"transactionID": &graphql.ArgumentConfig{
 					Type: graphql.String,
 				},
+				"bankAccountID": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"bank": &graphql.ArgumentConfig{
+					Type: graphql.String,
+				},
+				"currency": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var userID string
-				var transactionID string
-
-				if p.Args["userID"] != nil {
-					userID = p.Args["userID"].(string)
-				} else {
-					userID = ""
-				}
-
-				if p.Args["transactionID"] != nil {
-					transactionID = p.Args["transactionID"].(string)
-				} else {
-					transactionID = ""
-				}
-
-				return db_layer.GetAccountBalances(userID, transactionID), nil
+				return db_layer.GetAccountBalances(p.Args), nil
 			},
 		},
 		"transactions": &graphql.Field{
@@ -212,22 +282,7 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var userID string
-				var transactionID string
-
-				if p.Args["userID"] != nil {
-					userID = p.Args["userID"].(string)
-				} else {
-					userID = ""
-				}
-
-				if p.Args["transactionID"] != nil {
-					transactionID = p.Args["transactionID"].(string)
-				} else {
-					transactionID = ""
-				}
-
-				return db_layer.GetTransactions(userID, transactionID), nil
+				return db_layer.GetTransactions(p.Args), nil
 			},
 		},
 		"messages": &graphql.Field{
@@ -238,15 +293,7 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var userID string
-
-				if p.Args["userID"] != nil {
-					userID = p.Args["userID"].(string)
-				} else {
-					userID = ""
-				}
-
-				return db_layer.GetMessages(userID), nil
+				return db_layer.GetMessages(p.Args), nil
 			},
 		},
 		"users": &graphql.Field{
@@ -257,15 +304,7 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var userID string
-
-				if p.Args["userID"] != nil {
-					userID = p.Args["userID"].(string)
-				} else {
-					userID = ""
-				}
-
-				return db_layer.GetUsers(userID), nil
+				return db_layer.GetUsers(p.Args), nil
 			},
 		},
 	},

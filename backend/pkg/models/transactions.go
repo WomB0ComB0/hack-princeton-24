@@ -1,17 +1,14 @@
 package models
 
 type Transaction struct {
-	ID                    string  `json:"id"`
-	UserID                string  `json:"user_id"`
-	Username              string  `json:"username"`
-	TransactionTypeID     int     `json:"transaction_type_id"`
-	TransactionType       string  `json:"transaction_type"`
-	TransactionCategoryID int     `json:"category_id"`
-	TransactionCategory   string  `json:"category"`
-	CurrencyID            int     `json:"currency_id"`
-	Currency              string  `json:"currency"`
-	Amount                float64 `json:"amount"`
-	DateTime              string  `json:"date_time"`
+	ID                  string              `json:"id"`
+	User                User                `json:"user"`
+	TransactionStatus   TransactionStatus   `json:"transaction_status"`
+	TransactionType     TransactionType     `json:"transaction_type"`
+	TransactionCategory TransactionCategory `json:"transaction_category"`
+	Currency            Currency            `json:"currency"`
+	Amount              float64             `json:"amount"`
+	DateTime            string              `json:"date_time"`
 }
 
 type TransactionStatus struct {

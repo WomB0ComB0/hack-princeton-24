@@ -10,8 +10,7 @@ type User struct {
 }
 
 type Message struct {
-	ID       int    `json:"id"`
-	UserID   string `json:"user_id"`
-	Username string `json:"username"`
-	Content  string `json:"content"`
+	ID      int    `json:"id"`
+	User    User   `json:"user"`
+	Content string `json:"content"`
 }
