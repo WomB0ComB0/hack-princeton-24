@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { FileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import {
@@ -19,6 +19,7 @@ import {
   FiMove,
   FiPieChart,
 } from 'react-icons/fi';
+import { UserProvider } from './user_context';
 
 interface ChartItem {
   id: string;
@@ -26,11 +27,11 @@ interface ChartItem {
   title: string;
 }
 
-export const Route = new FileRoute('/').createRoute({
+export const Route = createFileRoute('/')({
   component: IndexComponent,
 });
 
-export default function IndexComponent() {
+function IndexComponent() {
   const [description, setDescription] = useState('');
 
   return (

@@ -2,6 +2,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import useDebugRender from 'tilg';
 import { NotFound } from './components/client';
 import { routeTree } from './routeTree.gen';
+import '@/styles/tailwind.css';
 
 // Set up a Router instance
 const router = createRouter({
@@ -10,7 +11,7 @@ const router = createRouter({
     head: '',
   },
   defaultPreload: 'intent',
-  defaultNotFoundComponent: <NotFound />,
+  defaultNotFoundComponent: NotFound,
 });
 
 // Register things for typesafety

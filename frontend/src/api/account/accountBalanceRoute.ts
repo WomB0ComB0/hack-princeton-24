@@ -1,59 +1,152 @@
-interface accountBalance {
+export interface accountBalance {
   id: number;
   bank_account_id: number;
   currency_id: number;
   amount: number;
   date_time: string;
-} 
-
-// generic function that handles all CRUD operations
-async function fetchAccountBalance<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, options);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error: ${response.status} - ${errorText}`);
-    }
-    
-    return await response.json() as T;
 }
 
-// gets all account balances
-async function fetchAllAccountBalance(): Promise<accountBalance[]> {
-  return await fetchAccountBalance<accountBalance[]>('/');
-}
+const BASE_URL = 'http://localhost:8080/graphql';
 
-// get account balance by id
-async function fetchAccountBalanceById(id: number): Promise<accountBalance> {
-  return await fetchAccountBalance<accountBalance>(`/${id}`);
-}
-
-// get account balance by id and date
-async function fetchAccountBalanceByIdAndDate(id: number, date_time: string): Promise<accountBalance> {
-  return await fetchAccountBalance<accountBalance>(`/${id}/${date_time}`);
-}
-
-// create account balance (for manual entries)
-async function createAccountBalance(newAccountBalance: Partial<accountBalance>): Promise<accountBalance> {
-  return await fetchAccountBalance<accountBalance>('/', {
+// Generic function to handle all GraphQL queries for account balances
+async function fetchAccountBalanceData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+  const response = await fetch(BASE_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json'},
-    body: JSON.stringify(newAccountBalance),
-  })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Error: ${response.status} - ${errorText}`);
+  }
+
+  return await response.json() as T;
 }
 
-// delete account balance (for manual entries)
-async function deleteAccountBalance(id: number): Promise<accountBalance> {
-  return await fetchAccountBalance(`${id}`, {
-    method: 'DELETE',
-  })
+//
+// FUNCTIONS THAT RETURN MULTIPLE ACCOUNT BALANCES
+//
+
+// Fetches all account balances
+export async function fetchAllAccountBalances(): Promise<accountBalance[]> {
+  const query = `
+    query {
+      accountBalances {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalances: accountBalance[] }>(query)
+    .then(response => response.accountBalances);
 }
 
-// update account balance (for manual entries)
-async function updateAccountBalance(id: number, accountBalance: Partial<accountBalance>): Promise<accountBalance> {
-  return await fetchAccountBalance<accountBalance>(`/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json'},
-    body: JSON.stringify(accountBalance),
-  })
+// Fetches account balances by ID (multiple results)
+export async function fetchAccountBalancesById(id: number): Promise<accountBalance[]> {
+  const query = `
+    query GetAccountBalancesById($id: Int!) {
+      accountBalancesById(id: $id) {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalancesById: accountBalance[] }>(query, { id })
+    .then(response => response.accountBalancesById);
+}
+
+// Fetches account balances by ID and date (multiple results)
+export async function fetchAccountBalancesByIdAndDate(id: number, date_time: string): Promise<accountBalance[]> {
+  const query = `
+    query GetAccountBalancesByIdAndDate($id: Int!, $date_time: String!) {
+      accountBalancesByIdAndDate(id: $id, date_time: $date_time) {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalancesByIdAndDate: accountBalance[] }>(query, { id, date_time })
+    .then(response => response.accountBalancesByIdAndDate);
+}
+
+// Fetches account balances by ID and amount (multiple results)
+export async function fetchAccountBalancesByIdAndAmount(id: number, amount: number): Promise<accountBalance[]> {
+  const query = `
+    query GetAccountBalancesByIdAndAmount($id: Int!, $amount: Float!) {
+      accountBalancesByIdAndAmount(id: $id, amount: $amount) {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalancesByIdAndAmount: accountBalance[] }>(query, { id, amount })
+    .then(response => response.accountBalancesByIdAndAmount);
+}
+
+//
+// FUNCTIONS THAT RETURN A SINGLE ACCOUNT BALANCE
+//
+
+// Fetches a single account balance by ID
+export async function fetchAccountBalanceById(id: number): Promise<accountBalance> {
+  const query = `
+    query GetAccountBalanceById($id: Int!) {
+      accountBalance(id: $id) {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalance: accountBalance }>(query, { id })
+    .then(response => response.accountBalance);
+}
+
+// Fetches a single account balance by ID and date
+export async function fetchAccountBalanceByIdAndDate(id: number, date_time: string): Promise<accountBalance> {
+  const query = `
+    query GetAccountBalanceByIdAndDate($id: Int!, $date_time: String!) {
+      accountBalanceByIdAndDate(id: $id, date_time: $date_time) {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalanceByIdAndDate: accountBalance }>(query, { id, date_time })
+    .then(response => response.accountBalanceByIdAndDate);
+}
+
+// Fetches a single account balance by ID and amount
+export async function fetchAccountBalanceByIdAndAmount(id: number, amount: number): Promise<accountBalance> {
+  const query = `
+    query GetAccountBalanceByIdAndAmount($id: Int!, $amount: Float!) {
+      accountBalanceByIdAndAmount(id: $id, amount: $amount) {
+        id
+        bank_account_id
+        currency_id
+        amount
+        date_time
+      }
+    }
+  `;
+  return await fetchAccountBalanceData<{ accountBalanceByIdAndAmount: accountBalance }>(query, { id, amount })
+    .then(response => response.accountBalanceByIdAndAmount);
 }

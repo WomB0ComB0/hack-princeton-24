@@ -1,43 +1,57 @@
-interface bankAccount {
+export interface bankAccount {
   id: number;
   name: string;
 }
 
-// generic function that handles all CRUD operations
-async function fetchBankAccount<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+const BASE_URL = 'http://localhost:8080/graphql';
+
+// Generic function to handle all GraphQL queries for bank accounts
+async function fetchBankAccountData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return (await response.json()) as T;
+  return await response.json() as T;
 }
 
-// get all bank accounts
-async function fetchAllBankAccounts(): Promise<bankAccount[]> {
-  return await fetchBankAccount<bankAccount[]>('/banks');
+//
+// FUNCTIONS THAT RETURN MULTIPLE BANK ACCOUNTS
+//
+
+// Fetches all bank accounts
+export async function fetchAllBankAccounts(): Promise<bankAccount[]> {
+  const query = `
+    query {
+      bankAccounts {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchBankAccountData<{ bankAccounts: bankAccount[] }>(query).then(response => response.bankAccounts);
 }
 
-// get a bank account
-async function fetchBankAccountById(bankId: number): Promise<bankAccount> {
-  return await fetchBankAccount<bankAccount>(`/banks/${bankId}`);
+//
+// FUNCTIONS THAT RETURN A SINGLE BANK ACCOUNT
+//
+
+// Fetches a bank account by ID
+export async function fetchBankAccountById(bankId: number): Promise<bankAccount> {
+  const query = `
+    query GetbankAccountById($id: Int!) {
+      bankAccount(id: $id) {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchBankAccountData<{ bankAccount: bankAccount }>(query, { id: bankId }).then(response => response.bankAccount);
 }
 
-// create a bank account
-async function createBankAccount(
-  bankId: number,
-  newBank: Partial<bankAccount>,
-): Promise<bankAccount> {
-  return await fetchBankAccount<bankAccount>(`/banks/${bankId}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newBank),
-  });
-}
-
-// delete a bank account
-async function deleteBankAccount(bankId: number): Promise<bankAccount> {
-  return fetchBankAccount(`/banks/${bankId}`);
-}
