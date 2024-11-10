@@ -1,5 +1,5 @@
 'use client';
-
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import type { JSXElementConstructor, ReactNode } from 'react';
 import { Events, GlobalStoreProvider, ModeToggle, QueryProvider, ThemeProvider } from '.';
 
@@ -20,6 +20,7 @@ const Providers: React.FC<
       >
         <>
           {children}
+          <TanStackRouterDevtools position="bottom-right" />
           <ModeToggle />
         </>
       </ProviderStack>

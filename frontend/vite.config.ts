@@ -1,4 +1,5 @@
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import mkcert from 'vite-plugin-mkcert';
@@ -8,10 +9,14 @@ export default defineConfig({
   server: {
     https: true,
     port: 5173,
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
   },
   plugins: [
-    TanStackRouterVite(),
     react(),
+    TanStackRouterVite(),
     mkcert({
       source: 'coding',
     }),
@@ -22,7 +27,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'react-vendor': ['react', 'react-dom'],
         },
       },
     },

@@ -7,11 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Link } from '@tanstack/react-router';
 import * as React from 'react';
 import { FiDollarSign, FiMenu, FiX } from 'react-icons/fi';
 
-export const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+export const Nav = () => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm">
@@ -25,30 +26,30 @@ export const Header = () => {
               </span>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <a
+              <Link
                 href="#"
                 className="border-primary text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Home
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 hover:text-gray-700 dark:hover:text-gray-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Features
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 hover:text-gray-700 dark:hover:text-gray-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Pricing
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 hover:text-gray-700 dark:hover:text-gray-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">

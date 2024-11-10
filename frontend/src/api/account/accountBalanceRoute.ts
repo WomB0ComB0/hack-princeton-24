@@ -1,0 +1,59 @@
+interface accountBalance {
+  id: number;
+  bank_account_id: number;
+  currency_id: number;
+  amount: number;
+  date_time: string;
+} 
+
+// generic function that handles all CRUD operations
+async function fetchAccountBalance<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error: ${response.status} - ${errorText}`);
+    }
+    
+    return await response.json() as T;
+}
+
+// gets all account balances
+async function fetchAllAccountBalance(): Promise<accountBalance[]> {
+  return await fetchAccountBalance<accountBalance[]>('/');
+}
+
+// get account balance by id
+async function fetchAccountBalanceById(id: number): Promise<accountBalance> {
+  return await fetchAccountBalance<accountBalance>(`/${id}`);
+}
+
+// get account balance by id and date
+async function fetchAccountBalanceByIdAndDate(id: number, date_time: string): Promise<accountBalance> {
+  return await fetchAccountBalance<accountBalance>(`/${id}/${date_time}`);
+}
+
+// create account balance (for manual entries)
+async function createAccountBalance(newAccountBalance: Partial<accountBalance>): Promise<accountBalance> {
+  return await fetchAccountBalance<accountBalance>('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(newAccountBalance),
+  })
+}
+
+// delete account balance (for manual entries)
+async function deleteAccountBalance(id: number): Promise<accountBalance> {
+  return await fetchAccountBalance(`${id}`, {
+    method: 'DELETE',
+  })
+}
+
+// update account balance (for manual entries)
+async function updateAccountBalance(id: number, accountBalance: Partial<accountBalance>): Promise<accountBalance> {
+  return await fetchAccountBalance<accountBalance>(`/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(accountBalance),
+  })
+}

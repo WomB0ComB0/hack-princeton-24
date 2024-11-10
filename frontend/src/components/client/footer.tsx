@@ -1,4 +1,5 @@
-// Types
+import { Link } from '@tanstack/react-router';
+
 type FooterLink = {
   label: string;
   href: string;
@@ -52,9 +53,12 @@ const FooterLinkList: React.FC<{ section: FooterSection }> = ({ section }) => (
     <ul className="space-y-2">
       {section.links.map((link) => (
         <li key={link.label}>
-          <a href={link.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+          <Link
+            href={link.href}
+            className="text-sm text-gray-400 hover:text-white transition-colors"
+          >
             {link.label}
-          </a>
+          </Link>
         </li>
       ))}
     </ul>

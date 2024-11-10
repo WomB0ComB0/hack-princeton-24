@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd frontend && pnpm run dev\" \"cd backend && npm run start\"",
+    "dev": "concurrently \"cd frontend && pnpm run dev\" \"cd backend && go run main.go\"",
     "lint": "bunx biome check --write ./"
   },
   "keywords": [],

@@ -11,20 +11,48 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as R404Import } from './routes/404'
 import { Route as IndexImport } from './routes/index'
+import { Route as DashboardTransactionsImport } from './routes/dashboard/transactions'
+import { Route as DashboardStocksImport } from './routes/dashboard/stocks'
+import { Route as DashboardPlannerImport } from './routes/dashboard/planner'
+import { Route as DashboardCryptoImport } from './routes/dashboard/crypto'
+import { Route as DashboardAccountsImport } from './routes/dashboard/accounts'
 
 // Create/Update Routes
-
-const R404Route = R404Import.update({
-  id: '/404',
-  path: '/404',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardTransactionsRoute = DashboardTransactionsImport.update({
+  id: '/dashboard/transactions',
+  path: '/dashboard/transactions',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardStocksRoute = DashboardStocksImport.update({
+  id: '/dashboard/stocks',
+  path: '/dashboard/stocks',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardPlannerRoute = DashboardPlannerImport.update({
+  id: '/dashboard/planner',
+  path: '/dashboard/planner',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardCryptoRoute = DashboardCryptoImport.update({
+  id: '/dashboard/crypto',
+  path: '/dashboard/crypto',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardAccountsRoute = DashboardAccountsImport.update({
+  id: '/dashboard/accounts',
+  path: '/dashboard/accounts',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +67,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/404': {
-      id: '/404'
-      path: '/404'
-      fullPath: '/404'
-      preLoaderRoute: typeof R404Import
+    '/dashboard/accounts': {
+      id: '/dashboard/accounts'
+      path: '/dashboard/accounts'
+      fullPath: '/dashboard/accounts'
+      preLoaderRoute: typeof DashboardAccountsImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/crypto': {
+      id: '/dashboard/crypto'
+      path: '/dashboard/crypto'
+      fullPath: '/dashboard/crypto'
+      preLoaderRoute: typeof DashboardCryptoImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/planner': {
+      id: '/dashboard/planner'
+      path: '/dashboard/planner'
+      fullPath: '/dashboard/planner'
+      preLoaderRoute: typeof DashboardPlannerImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/stocks': {
+      id: '/dashboard/stocks'
+      path: '/dashboard/stocks'
+      fullPath: '/dashboard/stocks'
+      preLoaderRoute: typeof DashboardStocksImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/transactions': {
+      id: '/dashboard/transactions'
+      path: '/dashboard/transactions'
+      fullPath: '/dashboard/transactions'
+      preLoaderRoute: typeof DashboardTransactionsImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +109,76 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/404': typeof R404Route
+  '/dashboard/accounts': typeof DashboardAccountsRoute
+  '/dashboard/crypto': typeof DashboardCryptoRoute
+  '/dashboard/planner': typeof DashboardPlannerRoute
+  '/dashboard/stocks': typeof DashboardStocksRoute
+  '/dashboard/transactions': typeof DashboardTransactionsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/404': typeof R404Route
+  '/dashboard/accounts': typeof DashboardAccountsRoute
+  '/dashboard/crypto': typeof DashboardCryptoRoute
+  '/dashboard/planner': typeof DashboardPlannerRoute
+  '/dashboard/stocks': typeof DashboardStocksRoute
+  '/dashboard/transactions': typeof DashboardTransactionsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/404': typeof R404Route
+  '/dashboard/accounts': typeof DashboardAccountsRoute
+  '/dashboard/crypto': typeof DashboardCryptoRoute
+  '/dashboard/planner': typeof DashboardPlannerRoute
+  '/dashboard/stocks': typeof DashboardStocksRoute
+  '/dashboard/transactions': typeof DashboardTransactionsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/404'
+  fullPaths:
+    | '/'
+    | '/dashboard/accounts'
+    | '/dashboard/crypto'
+    | '/dashboard/planner'
+    | '/dashboard/stocks'
+    | '/dashboard/transactions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404'
-  id: '__root__' | '/' | '/404'
+  to:
+    | '/'
+    | '/dashboard/accounts'
+    | '/dashboard/crypto'
+    | '/dashboard/planner'
+    | '/dashboard/stocks'
+    | '/dashboard/transactions'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard/accounts'
+    | '/dashboard/crypto'
+    | '/dashboard/planner'
+    | '/dashboard/stocks'
+    | '/dashboard/transactions'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  R404Route: typeof R404Route
+  DashboardAccountsRoute: typeof DashboardAccountsRoute
+  DashboardCryptoRoute: typeof DashboardCryptoRoute
+  DashboardPlannerRoute: typeof DashboardPlannerRoute
+  DashboardStocksRoute: typeof DashboardStocksRoute
+  DashboardTransactionsRoute: typeof DashboardTransactionsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  R404Route: R404Route,
+  DashboardAccountsRoute: DashboardAccountsRoute,
+  DashboardCryptoRoute: DashboardCryptoRoute,
+  DashboardPlannerRoute: DashboardPlannerRoute,
+  DashboardStocksRoute: DashboardStocksRoute,
+  DashboardTransactionsRoute: DashboardTransactionsRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +192,30 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/404"
+        "/dashboard/accounts",
+        "/dashboard/crypto",
+        "/dashboard/planner",
+        "/dashboard/stocks",
+        "/dashboard/transactions"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/404": {
-      "filePath": "404.tsx"
+    "/dashboard/accounts": {
+      "filePath": "dashboard/accounts.tsx"
+    },
+    "/dashboard/crypto": {
+      "filePath": "dashboard/crypto.tsx"
+    },
+    "/dashboard/planner": {
+      "filePath": "dashboard/planner.tsx"
+    },
+    "/dashboard/stocks": {
+      "filePath": "dashboard/stocks.tsx"
+    },
+    "/dashboard/transactions": {
+      "filePath": "dashboard/transactions.tsx"
     }
   }
 }
