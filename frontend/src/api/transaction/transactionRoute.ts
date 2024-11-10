@@ -10,7 +10,10 @@ export interface transaction {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for transactions
-async function fetchTransactionData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchTransactionData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -22,7 +25,7 @@ async function fetchTransactionData<T>(query: string, variables: Record<string, 
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -43,8 +46,9 @@ export async function fetchAllTransactions(): Promise<transaction[]> {
       }
     }
   `;
-  return await fetchTransactionData<{ transactions: transaction[] }>(query)
-    .then(response => response.transactions);
+  return await fetchTransactionData<{ transactions: transaction[] }>(query).then(
+    (response) => response.transactions,
+  );
 }
 
 // Fetches transactions by user ID
@@ -61,12 +65,15 @@ export async function fetchTransactionsByUserId(user_id: string): Promise<transa
       }
     }
   `;
-  return await fetchTransactionData<{ transactions: transaction[] }>(query, { user_id })
-    .then(response => response.transactions);
+  return await fetchTransactionData<{ transactions: transaction[] }>(query, { user_id }).then(
+    (response) => response.transactions,
+  );
 }
 
 // Fetches transactions by transaction type ID
-export async function fetchTransactionsByTransactionTypeId(transaction_type_id: number): Promise<transaction[]> {
+export async function fetchTransactionsByTransactionTypeId(
+  transaction_type_id: number,
+): Promise<transaction[]> {
   const query = `
     query GetTransactionsByTransactionTypeId($transaction_type_id: Int!) {
       transactions(transaction_type_id: $transaction_type_id) {
@@ -79,8 +86,9 @@ export async function fetchTransactionsByTransactionTypeId(transaction_type_id: 
       }
     }
   `;
-  return await fetchTransactionData<{ transactions: transaction[] }>(query, { transaction_type_id })
-    .then(response => response.transactions);
+  return await fetchTransactionData<{ transactions: transaction[] }>(query, {
+    transaction_type_id,
+  }).then((response) => response.transactions);
 }
 
 // Fetches transactions by date
@@ -97,8 +105,9 @@ export async function fetchTransactionsByDate(date_time: string): Promise<transa
       }
     }
   `;
-  return await fetchTransactionData<{ transactions: transaction[] }>(query, { date_time })
-    .then(response => response.transactions);
+  return await fetchTransactionData<{ transactions: transaction[] }>(query, { date_time }).then(
+    (response) => response.transactions,
+  );
 }
 
 //
@@ -119,8 +128,9 @@ export async function fetchTransactionById(id: number): Promise<transaction> {
       }
     }
   `;
-  return await fetchTransactionData<{ transaction: transaction }>(query, { id })
-    .then(response => response.transaction);
+  return await fetchTransactionData<{ transaction: transaction }>(query, { id }).then(
+    (response) => response.transaction,
+  );
 }
 
 // Fetches a transaction by user ID (assuming unique for example)
@@ -137,12 +147,15 @@ export async function fetchTransactionByUserId(user_id: string): Promise<transac
       }
     }
   `;
-  return await fetchTransactionData<{ transaction: transaction }>(query, { user_id })
-    .then(response => response.transaction);
+  return await fetchTransactionData<{ transaction: transaction }>(query, { user_id }).then(
+    (response) => response.transaction,
+  );
 }
 
 // Fetches a transaction by transaction type ID (assuming unique for example)
-export async function fetchTransactionByTransactionTypeId(transaction_type_id: number): Promise<transaction> {
+export async function fetchTransactionByTransactionTypeId(
+  transaction_type_id: number,
+): Promise<transaction> {
   const query = `
     query GetTransactionByTransactionTypeId($transaction_type_id: Int!) {
       transaction(transaction_type_id: $transaction_type_id) {
@@ -155,8 +168,9 @@ export async function fetchTransactionByTransactionTypeId(transaction_type_id: n
       }
     }
   `;
-  return await fetchTransactionData<{ transaction: transaction }>(query, { transaction_type_id })
-    .then(response => response.transaction);
+  return await fetchTransactionData<{ transaction: transaction }>(query, {
+    transaction_type_id,
+  }).then((response) => response.transaction);
 }
 
 // Fetches a transaction by date (assuming unique for example)
@@ -173,6 +187,7 @@ export async function fetchTransactionByDate(date_time: string): Promise<transac
       }
     }
   `;
-  return await fetchTransactionData<{ transaction: transaction }>(query, { date_time })
-    .then(response => response.transaction);
+  return await fetchTransactionData<{ transaction: transaction }>(query, { date_time }).then(
+    (response) => response.transaction,
+  );
 }

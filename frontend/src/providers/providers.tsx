@@ -1,4 +1,5 @@
 'use client';
+import { AuthProvider } from '@/core/auth';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import type { JSXElementConstructor, ReactNode } from 'react';
 import { Events, GlobalStoreProvider, ModeToggle, QueryProvider, ThemeProvider } from '.';
@@ -14,6 +15,7 @@ const Providers: React.FC<
         providers={[
           [ThemeProvider, {}],
           [QueryProvider, {}],
+          [AuthProvider, {}],
           [GlobalStoreProvider, {}],
           [Events, {}],
         ]}

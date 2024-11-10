@@ -6,7 +6,10 @@ export interface bankAccountType {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for bank account types
-async function fetchBankAccountTypeData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchBankAccountTypeData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +21,7 @@ async function fetchBankAccountTypeData<T>(query: string, variables: Record<stri
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return  await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -35,8 +38,9 @@ export async function fetchAllBankAccountTypes(): Promise<bankAccountType[]> {
       }
     }
   `;
-  return await fetchBankAccountTypeData<{ bankAccountTypes: bankAccountType[] }>(query)
-    .then(response => response.bankAccountTypes);
+  return await fetchBankAccountTypeData<{ bankAccountTypes: bankAccountType[] }>(query).then(
+    (response) => response.bankAccountTypes,
+  );
 }
 
 //
@@ -53,8 +57,9 @@ export async function fetchBankAccountTypeById(id: number): Promise<bankAccountT
       }
     }
   `;
-  return await fetchBankAccountTypeData<{ bankAccountType: bankAccountType }>(query, { id })
-    .then(response => response.bankAccountType);
+  return await fetchBankAccountTypeData<{ bankAccountType: bankAccountType }>(query, { id }).then(
+    (response) => response.bankAccountType,
+  );
 }
 
 // Fetches a bank account type by name
@@ -67,7 +72,7 @@ export async function fetchBankAccountTypeByName(name: string): Promise<bankAcco
       }
     }
   `;
-  return await fetchBankAccountTypeData<{ bankAccountType: bankAccountType }>(query, { name })
-    .then(response => response.bankAccountType);
+  return await fetchBankAccountTypeData<{ bankAccountType: bankAccountType }>(query, { name }).then(
+    (response) => response.bankAccountType,
+  );
 }
-

@@ -1,7 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/(auth)/_auth/layout')({
-  // Unique path now
+export const Route = createFileRoute('/(auth)/_auth')({
   component: LayoutComponent,
 })
 

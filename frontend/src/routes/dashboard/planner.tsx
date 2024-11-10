@@ -1,14 +1,21 @@
-import { useEffect, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import { fetchAllAccountBalances, fetchTransactionsByUserId } from '@/api'
-import type { transaction, accountBalance } from '@/api'
-import { useUserContext } from '../user_context'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Button } from "@/components/ui/button"
-import { AlertCircle, DollarSign, TrendingUp } from 'lucide-react'
+import { fetchAllAccountBalances, fetchTransactionsByUserId } from '@/api';
+import type { accountBalance, transaction } from '@/api';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { createFileRoute } from '@tanstack/react-router';
+import { AlertCircle, DollarSign, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useUserContext } from '../user_context';
 
 const LoadingSkeleton = () => {
   return (
@@ -31,8 +38,8 @@ const LoadingSkeleton = () => {
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 const ErrorAlert = ({ message }: { message: string }) => {
   return (
@@ -41,11 +48,11 @@ const ErrorAlert = ({ message }: { message: string }) => {
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>{message}</AlertDescription>
     </Alert>
-  )
-}
+  );
+};
 
 const AccountSummary = ({ balances }: { balances: accountBalance[] }) => {
-  const totalBalance = balances.reduce((sum, balance) => sum + balance.amount, 0)
+  const totalBalance = balances.reduce((sum, balance) => sum + balance.amount, 0);
 
   return (
     <Card>
@@ -65,11 +72,11 @@ const AccountSummary = ({ balances }: { balances: accountBalance[] }) => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 const RecentTransactions = ({ transactions }: { transactions: transaction[] }) => {
-  const recentTransactions = transactions.slice(0, 5)
+  const recentTransactions = transactions.slice(0, 5);
 
   return (
     <Card>
@@ -98,62 +105,61 @@ const RecentTransactions = ({ transactions }: { transactions: transaction[] }) =
         </Table>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 function Planner() {
-  const { user, loading: userLoading } = useUserContext()
-  const [accountBalances, setAccountBalances] = useState<accountBalance[]>([])
-  const [transactions, setTransactions] = useState<transaction[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { user, loading: userLoading } = useUserContext();
+  const [accountBalances, setAccountBalances] = useState<accountBalance[]>([]);
+  const [transactions, setTransactions] = useState<transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
-      if (userLoading || !user) return
+      if (userLoading || !user) return;
 
       try {
-        setLoading(true)
+        setLoading(true);
         const [balances, transactionsData] = await Promise.all([
           fetchAllAccountBalances(),
-          fetchTransactionsByUserId(user.id)
-        ])
-        setAccountBalances(balances)
-        setTransactions(transactionsData)
+          fetchTransactionsByUserId(user.id),
+        ]);
+        setAccountBalances(balances);
+        setTransactions(transactionsData);
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'Error fetching data')
+        setError(error instanceof Error ? error.message : 'Error fetching data');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    loadData()
-  }, [user, userLoading])
+    loadData();
+  }, [user, userLoading]);
 
   if (userLoading || loading) {
-    return <LoadingSkeleton />
+    return <LoadingSkeleton />;
   }
 
   if (error) {
-    return <ErrorAlert message={error} />
+    return <ErrorAlert message={error} />;
   }
 
   if (!user) {
-    return <ErrorAlert message="Please log in to view your planner." />
+    return <ErrorAlert message="Please log in to view your planner." />;
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Financial Planner for {user.first_name} {user.last_name}</h1>
+      <h1 className="text-3xl font-bold">
+        Financial Planner for {user.first_name} {user.last_name}
+      </h1>
       <AccountSummary balances={accountBalances} />
       <RecentTransactions transactions={transactions} />
     </div>
-  )
+  );
 }
 
 export const Route = createFileRoute('/dashboard/planner')({
   component: Planner,
-})
-
-export default Planner
-
+});

@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import { bank, bankAccount, bankAccountStatus, bankAccountType } from '@/api';
+import type { bank, bankAccount, bankAccountStatus, bankAccountType } from '@/api';
+import { createFileRoute } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/dashboard/accounts')({
   component: accounts,
-})
+});
 
 function accounts() {
   type Bank = bank;
@@ -20,6 +20,11 @@ function accounts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
-  return 'Hello /dashboard/accounts!'
+  return (
+    <>
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Accounts</h2>
+      </div>
+    </>
+  );
 }

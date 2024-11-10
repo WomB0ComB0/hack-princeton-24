@@ -6,7 +6,10 @@ export interface transactionStatus {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for transaction statuses
-async function fetchTransactionStatusData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchTransactionStatusData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +21,7 @@ async function fetchTransactionStatusData<T>(query: string, variables: Record<st
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -35,8 +38,9 @@ export async function fetchAllTransactionStatus(): Promise<transactionStatus[]> 
       }
     }
   `;
-  return await fetchTransactionStatusData<{ transactionStatuses: transactionStatus[] }>(query)
-    .then(response => response.transactionStatuses);
+  return await fetchTransactionStatusData<{ transactionStatuses: transactionStatus[] }>(query).then(
+    (response) => response.transactionStatuses,
+  );
 }
 
 // Fetches transaction statuses by name (multiple results possible)
@@ -49,8 +53,9 @@ export async function fetchTransactionStatusesByName(name: string): Promise<tran
       }
     }
   `;
-  return await fetchTransactionStatusData<{ transactionStatuses: transactionStatus[] }>(query, { name })
-    .then(response => response.transactionStatuses);
+  return await fetchTransactionStatusData<{ transactionStatuses: transactionStatus[] }>(query, {
+    name,
+  }).then((response) => response.transactionStatuses);
 }
 
 //
@@ -67,8 +72,7 @@ export async function fetchTransactionStatusById(id: number): Promise<transactio
       }
     }
   `;
-  return await fetchTransactionStatusData<{ transactionStatus: transactionStatus }>(query, { id })
-    .then(response => response.transactionStatus);
+  return await fetchTransactionStatusData<{ transactionStatus: transactionStatus }>(query, {
+    id,
+  }).then((response) => response.transactionStatus);
 }
-
-

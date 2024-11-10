@@ -19,7 +19,7 @@ async function fetchBankData<T>(query: string, variables: Record<string, any> = 
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -37,7 +37,7 @@ export async function fetchAllBanks(): Promise<bank[]> {
       }
     }
   `;
-  return await fetchBankData<{ banks: bank[] }>(query).then(response => response.banks);
+  return await fetchBankData<{ banks: bank[] }>(query).then((response) => response.banks);
 }
 
 // Fetches banks by name (multiple results possible)
@@ -51,7 +51,7 @@ export async function fetchBanksByName(name: string): Promise<bank[]> {
       }
     }
   `;
-  return await fetchBankData<{ banks: bank[] }>(query, { name }).then(response => response.banks);
+  return await fetchBankData<{ banks: bank[] }>(query, { name }).then((response) => response.banks);
 }
 
 //
@@ -69,7 +69,7 @@ export async function fetchBankById(id: number): Promise<bank> {
       }
     }
   `;
-  return await fetchBankData<{ bank: bank }>(query, { id }).then(response => response.bank);
+  return await fetchBankData<{ bank: bank }>(query, { id }).then((response) => response.bank);
 }
 
 // Fetches a bank by name (assuming a unique name)
@@ -83,7 +83,7 @@ export async function fetchBankByName(name: string): Promise<bank> {
       }
     }
   `;
-  return await fetchBankData<{ bank: bank }>(query, { name }).then(response => response.bank);
+  return await fetchBankData<{ bank: bank }>(query, { name }).then((response) => response.bank);
 }
 
 // Fetches a bank by routing number (assuming a unique routing number)
@@ -97,7 +97,7 @@ export async function fetchBankByRoutingNumber(routing_number: string): Promise<
       }
     }
   `;
-  return await fetchBankData<{ bank: bank }>(query, { routing_number }).then(response => response.bank);
+  return await fetchBankData<{ bank: bank }>(query, { routing_number }).then(
+    (response) => response.bank,
+  );
 }
-
-

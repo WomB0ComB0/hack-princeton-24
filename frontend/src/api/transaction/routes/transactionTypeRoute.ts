@@ -6,7 +6,10 @@ export interface transactionType {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for transaction types
-async function fetchTransactionTypeData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchTransactionTypeData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +21,7 @@ async function fetchTransactionTypeData<T>(query: string, variables: Record<stri
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -35,8 +38,9 @@ export async function fetchAllTransactionTypes(): Promise<transactionType[]> {
       }
     }
   `;
-  return await fetchTransactionTypeData<{ transactionTypes: transactionType[] }>(query)
-    .then(response => response.transactionTypes);
+  return await fetchTransactionTypeData<{ transactionTypes: transactionType[] }>(query).then(
+    (response) => response.transactionTypes,
+  );
 }
 
 // Fetches transaction types by name (multiple results possible)
@@ -49,8 +53,9 @@ export async function fetchTransactionTypesByName(name: string): Promise<transac
       }
     }
   `;
-  return await fetchTransactionTypeData<{ transactionTypes: transactionType[] }>(query, { name })
-    .then(response => response.transactionTypes);
+  return await fetchTransactionTypeData<{ transactionTypes: transactionType[] }>(query, {
+    name,
+  }).then((response) => response.transactionTypes);
 }
 
 //
@@ -67,8 +72,9 @@ export async function fetchTransactionTypeById(id: number): Promise<transactionT
       }
     }
   `;
-  return await fetchTransactionTypeData<{ transactionType: transactionType }>(query, { id })
-    .then(response => response.transactionType);
+  return await fetchTransactionTypeData<{ transactionType: transactionType }>(query, { id }).then(
+    (response) => response.transactionType,
+  );
 }
 
 // Fetches a transaction type by name (assuming a unique name)
@@ -81,6 +87,7 @@ export async function fetchTransactionTypeByName(name: string): Promise<transact
       }
     }
   `;
-  return await fetchTransactionTypeData<{ transactionType: transactionType }>(query, { name })
-    .then(response => response.transactionType);
+  return await fetchTransactionTypeData<{ transactionType: transactionType }>(query, { name }).then(
+    (response) => response.transactionType,
+  );
 }

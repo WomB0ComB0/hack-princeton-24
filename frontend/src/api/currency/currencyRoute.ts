@@ -6,7 +6,10 @@ export interface currency {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for currencies
-async function fetchCurrencyData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchCurrencyData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +21,7 @@ async function fetchCurrencyData<T>(query: string, variables: Record<string, any
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -35,8 +38,9 @@ export async function fetchAllCurrencies(): Promise<currency[]> {
       }
     }
   `;
-  return await fetchCurrencyData<{ currencies: currency[] }>(query)
-    .then(response => response.currencies);
+  return await fetchCurrencyData<{ currencies: currency[] }>(query).then(
+    (response) => response.currencies,
+  );
 }
 
 // Fetches currencies by name (multiple results possible)
@@ -49,8 +53,9 @@ export async function fetchCurrenciesByName(name: string): Promise<currency[]> {
       }
     }
   `;
-  return await fetchCurrencyData<{ currencies: currency[] }>(query, { name })
-    .then(response => response.currencies);
+  return await fetchCurrencyData<{ currencies: currency[] }>(query, { name }).then(
+    (response) => response.currencies,
+  );
 }
 
 //
@@ -67,8 +72,9 @@ export async function fetchCurrencyById(id: number): Promise<currency> {
       }
     }
   `;
-  return await fetchCurrencyData<{ currency: currency }>(query, { id })
-    .then(response => response.currency);
+  return await fetchCurrencyData<{ currency: currency }>(query, { id }).then(
+    (response) => response.currency,
+  );
 }
 
 // Fetches a currency by name (assuming a unique name)
@@ -81,6 +87,7 @@ export async function fetchCurrencyByName(name: string): Promise<currency> {
       }
     }
   `;
-  return await fetchCurrencyData<{ currency: currency }>(query, { name })
-    .then(response => response.currency);
+  return await fetchCurrencyData<{ currency: currency }>(query, { name }).then(
+    (response) => response.currency,
+  );
 }

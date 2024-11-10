@@ -6,7 +6,10 @@ export interface bankAccountStatus {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for bank account statuses
-async function fetchBankAccountStatusData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchBankAccountStatusData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +21,7 @@ async function fetchBankAccountStatusData<T>(query: string, variables: Record<st
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -35,8 +38,9 @@ export async function fetchAllBankAccountStatus(): Promise<bankAccountStatus[]> 
       }
     }
   `;
-  return await fetchBankAccountStatusData<{ bankAccountStatuses: bankAccountStatus[] }>(query)
-    .then(response => response.bankAccountStatuses);
+  return await fetchBankAccountStatusData<{ bankAccountStatuses: bankAccountStatus[] }>(query).then(
+    (response) => response.bankAccountStatuses,
+  );
 }
 
 //
@@ -53,8 +57,9 @@ export async function fetchBankAccountStatusById(id: number): Promise<bankAccoun
       }
     }
   `;
-  return await fetchBankAccountStatusData<{ bankAccountStatus: bankAccountStatus }>(query, { id })
-    .then(response => response.bankAccountStatus);
+  return await fetchBankAccountStatusData<{ bankAccountStatus: bankAccountStatus }>(query, {
+    id,
+  }).then((response) => response.bankAccountStatus);
 }
 
 // Fetches a bank account status by name
@@ -67,9 +72,7 @@ export async function fetchBankAccountStatusByName(name: string): Promise<bankAc
       }
     }
   `;
-  return await fetchBankAccountStatusData<{ bankAccountStatus: bankAccountStatus }>(query, { name })
-    .then(response => response.bankAccountStatus);
+  return await fetchBankAccountStatusData<{ bankAccountStatus: bankAccountStatus }>(query, {
+    name,
+  }).then((response) => response.bankAccountStatus);
 }
-
-
-

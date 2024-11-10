@@ -6,7 +6,10 @@ export interface bankAccount {
 const BASE_URL = 'http://localhost:8080/graphql';
 
 // Generic function to handle all GraphQL queries for bank accounts
-async function fetchBankAccountData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+async function fetchBankAccountData<T>(
+  query: string,
+  variables: Record<string, any> = {},
+): Promise<T> {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +21,7 @@ async function fetchBankAccountData<T>(query: string, variables: Record<string, 
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return await response.json() as T;
+  return (await response.json()) as T;
 }
 
 //
@@ -35,7 +38,9 @@ export async function fetchAllBankAccounts(): Promise<bankAccount[]> {
       }
     }
   `;
-  return await fetchBankAccountData<{ bankAccounts: bankAccount[] }>(query).then(response => response.bankAccounts);
+  return await fetchBankAccountData<{ bankAccounts: bankAccount[] }>(query).then(
+    (response) => response.bankAccounts,
+  );
 }
 
 //
@@ -52,6 +57,7 @@ export async function fetchBankAccountById(bankId: number): Promise<bankAccount>
       }
     }
   `;
-  return await fetchBankAccountData<{ bankAccount: bankAccount }>(query, { id: bankId }).then(response => response.bankAccount);
+  return await fetchBankAccountData<{ bankAccount: bankAccount }>(query, { id: bankId }).then(
+    (response) => response.bankAccount,
+  );
 }
-
