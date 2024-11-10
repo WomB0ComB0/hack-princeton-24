@@ -15,10 +15,32 @@ async function fetchCurrency<T>(endpoint: string, options: RequestInit = {}): Pr
   return await response.json() as T;
 }
 
+//
+// GETS
+// MULTIPLE
+// TRANSACTIONS 
+//
+
 // gets all currencies
-async function fetchAllCurrency(): Promise<currency[]> {
+async function fetchAllCurrencies(): Promise<currency[]> {
   return await fetchCurrency<currency[]>('/');
 }
+
+// gets a currency by id
+async function fetchCurrenciesById(id: number): Promise<currency[]> {
+  return await fetchCurrency<currency[]>(`/${id}`);
+}
+
+// gets a currency by name
+async function fetchCurrenciesByName(name: string): Promise<currency[]> {
+  return await fetchCurrency<currency[]>(`/${name}`);
+}
+
+//
+// GETS
+// ONE
+// TRANSACTION (GET)
+//
 
 // gets a currency by id
 async function fetchCurrencyById(id: number): Promise<currency> {
@@ -29,6 +51,13 @@ async function fetchCurrencyById(id: number): Promise<currency> {
 async function fetchCurrencyByName(name: string): Promise<currency> {
   return await fetchCurrency<currency>(`/${name}`);
 }
+
+
+//
+// GETS
+// ONE
+// TRANSACTION (NON_GET)
+//
 
 // create a currency
 async function createCurrency(newCurrency: Partial<currency>): Promise<currency> {

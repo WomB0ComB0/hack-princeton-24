@@ -16,11 +16,37 @@ async function fetchBank<T>(endpoint: string, options: RequestInit = {}): Promis
   return await response.json() as T;
 }
 
+//
+// GETS
+// MULTIPLE
+// TRANSACTIONS
+//
 
 // get all banks
 async function fetchAllBanks(): Promise<bank[]> {
   return await fetchBank<bank[]>('/');
 }
+
+// get banks by id 
+async function fetchBanksById(id: number): Promise<bank[]> {
+  return await fetchBank<bank[]>(`/${id}`);
+}
+
+// get banks by name
+async function fetchBanksByName(name: string): Promise<bank[]> {
+  return await fetchBank<bank[]>(`/${name}`);
+}
+
+// get bank by routing number 
+async function fetchBanksByRoutingNumber(routing_number: number): Promise<bank[]> {
+  return await fetchBank<bank[]>(`/${routing_number}`);
+}
+
+//
+// GETS
+// ONE
+// TRANSACTION (GET)
+//
 
 // get bank by id 
 async function fetchBankById(id: number): Promise<bank> {
@@ -36,6 +62,12 @@ async function fetchBankByName(name: string): Promise<bank> {
 async function fetchBankByRoutingNumber(routing_number: number): Promise<bank> {
   return await fetchBank<bank>(`/${routing_number}`);
 }
+
+//
+// GETS
+// ONE
+// TRANSACTION (NON-GET)
+//
 
 // create a new bank (manual entries)
 async function createBank(newBank: Partial<bank>): Promise<bank> {

@@ -15,10 +15,32 @@ async function fetchTransactionStatus<T>(endpoint: string, options: RequestInit 
   return await response.json() as T;
 }
 
+//
+// GETS
+// MULTIPLE
+// TRANSACTIONS
+//
+
 // gets all transaction statuses
 async function fetchAllTransactionStatus(): Promise<transactionStatus[]> {
   return await fetchTransactionStatus<transactionStatus[]>('/');
 }
+
+// gets a transactionStatus by id
+async function fetchTransactionStatusesById(id: number): Promise<transactionStatus[]> {
+  return await fetchTransactionStatus<transactionStatus[]>(`/${id}`);
+}
+
+// gets a transactionStatus by name
+async function fetchTransactionStatusesByName(name: string): Promise<transactionStatus[]> {
+  return await fetchTransactionStatus<transactionStatus[]>(`/${name}`);
+}
+
+//
+// GETS
+// ONE
+// TRANSACTION (GET)
+//
 
 // gets a transactionStatus by id
 async function fetchTransactionStatusById(id: number): Promise<transactionStatus> {
@@ -29,6 +51,13 @@ async function fetchTransactionStatusById(id: number): Promise<transactionStatus
 async function fetchTransactionStatusByName(name: string): Promise<transactionStatus> {
   return await fetchTransactionStatus<transactionStatus>(`/${name}`);
 }
+
+
+//
+// GETS
+// ONE
+// TRANSACTION (NON-GET)
+//
 
 // create a transactionStatus
 async function createTransactionStatus(newTransactionStatus: Partial<transactionStatus>): Promise<transactionStatus> {

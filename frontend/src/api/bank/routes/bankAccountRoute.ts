@@ -17,27 +17,24 @@ async function fetchBankAccount<T>(endpoint: string, options: RequestInit = {}):
 
 // get all bank accounts
 async function fetchAllBankAccounts(): Promise<bankAccount[]> {
-  return await fetchBankAccount<bankAccount[]>('/banks');
+  return await fetchBankAccount<bankAccount[]>('/');
 }
 
 // get a bank account
 async function fetchBankAccountById(bankId: number): Promise<bankAccount> {
-  return await fetchBankAccount<bankAccount>(`/banks/${bankId}`);
+  return await fetchBankAccount<bankAccount>(`/${bankId}`);
 }
 
 // create a bank account
-async function createBankAccount(
-  bankId: number,
-  newBank: Partial<bankAccount>,
-): Promise<bankAccount> {
-  return await fetchBankAccount<bankAccount>(`/banks/${bankId}`, {
+async function createBankAccount(newBankAccount: Partial<bankAccount>): Promise<bankAccount> {
+  return await fetchBankAccount<bankAccount>('/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newBank),
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(newBankAccount),
   });
 }
 
 // delete a bank account
 async function deleteBankAccount(bankId: number): Promise<bankAccount> {
-  return fetchBankAccount(`/banks/${bankId}`);
+  return fetchBankAccount(`/${bankId}`);
 }

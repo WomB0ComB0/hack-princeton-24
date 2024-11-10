@@ -15,20 +15,48 @@ async function fetchTransactionType<T>(endpoint: string, options: RequestInit = 
   return await response.json() as T;
 }
 
+//
+// GETS 
+// MULTIPLE
+// TRANSACTIONS (GET)
+//
+
 // gets all transaction types
-async function fetchAllTransactionType(): Promise<transactionType[]> {
+async function fetchAllTransactionTypes(): Promise<transactionType[]> {
   return await fetchTransactionType<transactionType[]>('/');
 }
 
 // gets a transactionType by id
-async function fetchTransactionTypeById(id: number): Promise<transactionType> {
-  return await fetchTransactionType<transactionType>(`/${id}`);
+async function fetchTransactionTypesById(id: number): Promise<transactionType[]> {
+  return await fetchTransactionType<transactionType[]>(`/${id}`);
 }
 
 // gets a transactionType by name
-async function fetchTransactionTypeByName(name: string): Promise<transactionType> {
-  return await fetchTransactionType<transactionType>(`/${name}`);
+async function fetchTransactionsTypeByName(name: string): Promise<transactionType[]> {
+  return await fetchTransactionType<transactionType[]>(`/${name}`);
 }
+
+//
+// GETS 
+// ONE
+// TRANSACTION (GET)
+//
+
+// gets a transactionType by id
+async function fetchTransactionTypeById(id: number): Promise<transactionType[]> {
+  return await fetchTransactionType<transactionType[]>(`/${id}`);
+}
+
+// gets a transactionType by name
+async function fetchTransactionTypeByName(name: string): Promise<transactionType[]> {
+  return await fetchTransactionType<transactionType[]>(`/${name}`);
+}
+
+//
+// GETS 
+// ONLY
+// ONE TRANSACTION (NON-GET)
+//
 
 // create a transactionType
 async function createTransactionType(newTransactionType: Partial<transactionType>): Promise<transactionType> {
