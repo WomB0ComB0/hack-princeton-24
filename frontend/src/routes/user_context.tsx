@@ -1,21 +1,36 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { user } from '@/api'
+import { fetchUserById } from '@/api';
 
-// Define user context type
 interface UserContextType {
-  userId: number | null;
-  user: any; // Define this based on your `user` structure
-  setUser: (user: any) => void;
+  user: user | null;
+  setUser: (user: user | null) => void;
+  loading: boolean;
 }
 
-// Create UserContext
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [userId, setUserId] = useState<number | null>(null);
-  const [user, setUser] = useState<any>(null);
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<user | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await fetchUserById('1');
+        setUser(userData);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
-    <UserContext.Provider value={{ userId, user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
