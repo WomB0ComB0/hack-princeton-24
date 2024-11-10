@@ -58,6 +58,12 @@ CREATE TABLE TransactionStatuses (
     Name VARCHAR(50)
 );
 
+-- Create table for Transactions Categories
+CREATE TABLE TransactionCategories (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
 -- Create table for Transactions
 CREATE TABLE Transactions (
     ID VARCHAR(50) PRIMARY KEY,
@@ -65,12 +71,14 @@ CREATE TABLE Transactions (
     TransactionTypeID INT,
     CurrencyID INT,
     TransactionStatusID INT,
+    TransactionCategoryID INT,
     Amount DECIMAL(15, 2),
     DateTime TIMESTAMP,
     FOREIGN KEY (UserID) REFERENCES Users(ID),
     FOREIGN KEY (TransactionTypeID) REFERENCES TransactionTypes(ID),
     FOREIGN KEY (CurrencyID) REFERENCES Currencies(ID),
-    FOREIGN KEY (TransactionStatusID) REFERENCES TransactionStatuses(ID)
+    FOREIGN KEY (TransactionStatusID) REFERENCES TransactionStatuses(ID),
+    FOREIGN KEY (CategoryID) REFERENCES TransactionCategories(ID)
 );
 
 -- Create table for BankAccounts
