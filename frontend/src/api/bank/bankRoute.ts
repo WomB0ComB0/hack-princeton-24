@@ -1,4 +1,4 @@
-interface bank {
+export interface bank {
   id: number;
   name: string;
   routing_number: string;

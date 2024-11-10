@@ -2,9 +2,9 @@ import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/crypto')({
-  component: RouteComponent,
+  component: crypto,
 })
 
-function RouteComponent() {
+function crypto() {
   return 'Hello /dashboard/crypto!'
 }

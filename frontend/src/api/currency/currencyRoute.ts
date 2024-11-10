@@ -1,4 +1,4 @@
-interface currency {
+export interface currency {
   id: number;
   name: string;
 }

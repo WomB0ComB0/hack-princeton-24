@@ -1,4 +1,4 @@
-interface transactionStatus {
+export interface transactionStatus {
   id: number;
   name: string;
 }

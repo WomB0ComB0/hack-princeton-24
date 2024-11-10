@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@biomejs/biome": "1.9.4",
+    "@tanstack/react-router": "^1.81.0",
     "concurrently": "^9.1.0"
   }
 }

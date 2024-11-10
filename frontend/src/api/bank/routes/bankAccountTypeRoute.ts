@@ -1,4 +1,4 @@
-interface bankAccountType {
+export interface bankAccountType {
   id: number;
   name: string;
 }

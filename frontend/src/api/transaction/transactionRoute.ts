@@ -1,4 +1,4 @@
-interface transaction {
+export interface transaction {
   id: number;
   user_id: string;
   transaction_type_id: number;
