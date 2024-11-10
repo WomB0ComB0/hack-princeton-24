@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { BarChart3, Home, LayoutDashboard, Settings, Users } from 'lucide-react';
 import type React from 'react';
+import { memo } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,8 +38,8 @@ const menuItems = [
   { icon: Settings, label: 'Settings', to: '/dashboard/settings' },
 ];
 
-const SidebarMenuItems = React.memo(() => (
-  <SidebarMenu>
+const SidebarMenuItems = memo(() => (
+  <SidebarMeznu>
     {menuItems.map((item) => (
       <SidebarMenuItem key={item.to}>
         <SidebarMenuButton asChild>
@@ -59,7 +60,7 @@ const SidebarMenuItems = React.memo(() => (
         </SidebarMenuButton>
       </SidebarMenuItem>
     ))}
-  </SidebarMenu>
+  </SidebarMeznu>
 ));
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
