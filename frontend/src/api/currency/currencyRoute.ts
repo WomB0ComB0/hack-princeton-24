@@ -3,85 +3,84 @@ export interface currency {
   name: string;
 }
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'http://localhost:8080/graphql';
 
-// generic function that handles all CRUD operations
-async function fetchCurrency<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
-  
+// Generic function to handle all GraphQL queries for currencies
+async function fetchCurrencyData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
+  });
+
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
-  
+
   return await response.json() as T;
 }
 
 //
-// GETS
-// MULTIPLE
-// TRANSACTIONS 
+// FUNCTIONS THAT RETURN MULTIPLE CURRENCIES
 //
 
-// gets all currencies
+// Fetches all currencies
 export async function fetchAllCurrencies(): Promise<currency[]> {
-  return await fetchCurrency<currency[]>('/');
+  const query = `
+    query {
+      currencies {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchCurrencyData<{ currencies: currency[] }>(query)
+    .then(response => response.currencies);
 }
 
-// gets a currency by id
-export async function fetchCurrenciesById(id: number): Promise<currency[]> {
-  return await fetchCurrency<currency[]>(`/${id}`);
-}
-
-// gets a currency by name
+// Fetches currencies by name (multiple results possible)
 export async function fetchCurrenciesByName(name: string): Promise<currency[]> {
-  return await fetchCurrency<currency[]>(`/${name}`);
+  const query = `
+    query GetCurrenciesByName($name: String!) {
+      currencies(name: $name) {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchCurrencyData<{ currencies: currency[] }>(query, { name })
+    .then(response => response.currencies);
 }
 
 //
-// GETS
-// ONE
-// TRANSACTION (GET)
+// FUNCTIONS THAT RETURN A SINGLE CURRENCY
 //
 
-// gets a currency by id
+// Fetches a currency by ID
 export async function fetchCurrencyById(id: number): Promise<currency> {
-  return await fetchCurrency<currency>(`/${id}`);
+  const query = `
+    query GetCurrencyById($id: Int!) {
+      currency(id: $id) {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchCurrencyData<{ currency: currency }>(query, { id })
+    .then(response => response.currency);
 }
 
-// gets a currency by name
+// Fetches a currency by name (assuming a unique name)
 export async function fetchCurrencyByName(name: string): Promise<currency> {
-  return await fetchCurrency<currency>(`/${name}`);
-}
-
-
-//
-// GETS
-// ONE
-// TRANSACTION (NON_GET)
-//
-
-// create a currency
-export async function createCurrency(newCurrency: Partial<currency>): Promise<currency> {
-  return await fetchCurrency<currency>('/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json'},
-    body: JSON.stringify(newCurrency),
-  });
-}
-
-// change a currency
-export async function updateCurrency(id: number, currency: Partial<currency>): Promise<currency> {
-  return await fetchCurrency<currency>(`/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json'},
-    body: JSON.stringify(currency),
-  });
-}
-
-// delete a currency
-export async function deleteCurrency(id: number): Promise<currency> {
-  return await fetchCurrency(`/${id}`, {
-    method: 'DELETE',
-  });
+  const query = `
+    query GetCurrencyByName($name: String!) {
+      currency(name: $name) {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchCurrencyData<{ currency: currency }>(query, { name })
+    .then(response => response.currency);
 }

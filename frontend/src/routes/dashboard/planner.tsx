@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { fetchAllAccountBalances, fetchTransactionsById } from '@/api';
 import { transaction } from '@/api';
 import { accountBalance } from '@/api';
+import { useUserContext } from '../user_context';
 
 export const Route = createFileRoute('/dashboard/planner')({
   component: Planner,
@@ -12,6 +13,7 @@ function Planner() {
   type AccountBalance = accountBalance;
   type Transaction = transaction;
 
+  const { userId, setUserInfo } = useUserContext();
 
   const [accountBalances, setAccountBalances] = useState<AccountBalance[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -28,8 +30,8 @@ function Planner() {
         setAccountBalances(balances);
 
         // Fetch transactions
-        // const transactionsData = await fetchTransactionsById();
-        // setTransactions(transactionsData);
+        const transactionsData = await fetchTransactionsById(userId);
+        setTransactions(transactionsData);
 
         setLoading(false);
       } catch (error) {
@@ -50,7 +52,7 @@ function Planner() {
 
   return (
     <div>
-      <h1>Planner Dashboard</h1>
+      <h1>Planner</h1>
       
       <h2>Account Balances</h2>
       <ul>

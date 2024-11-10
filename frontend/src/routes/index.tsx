@@ -19,6 +19,7 @@ import {
   FiMove,
   FiPieChart,
 } from 'react-icons/fi';
+import { UserProvider } from './user_context';
 
 interface ChartItem {
   id: string;

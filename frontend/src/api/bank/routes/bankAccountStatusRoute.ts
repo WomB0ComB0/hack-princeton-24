@@ -3,56 +3,73 @@ export interface bankAccountStatus {
   name: string;
 }
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'http://localhost:8080/graphql';
 
-// generic function that handles all CRUD operations
-async function fetchBankAccountStatus<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+// Generic function to handle all GraphQL queries for bank account statuses
+async function fetchBankAccountStatusData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
 
-  return (await response.json()) as T;
+  return await response.json() as T;
 }
 
-// gets all bank account statuses
+//
+// FUNCTIONS THAT RETURN MULTIPLE BANK ACCOUNT STATUSES
+//
+
+// Fetches all bank account statuses
 export async function fetchAllBankAccountStatus(): Promise<bankAccountStatus[]> {
-  return await fetchBankAccountStatus<bankAccountStatus[]>('/');
+  const query = `
+    query {
+      bankAccountStatuses {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchBankAccountStatusData<{ bankAccountStatuses: bankAccountStatus[] }>(query)
+    .then(response => response.bankAccountStatuses);
 }
 
-// gets a bank account status by id
+//
+// FUNCTIONS THAT RETURN A SINGLE BANK ACCOUNT STATUS
+//
+
+// Fetches a bank account status by ID
 export async function fetchBankAccountStatusById(id: number): Promise<bankAccountStatus> {
-  return await fetchBankAccountStatus<bankAccountStatus>(`/${id}`);
+  const query = `
+    query GetBankAccountStatusById($id: Int!) {
+      bankAccountStatus(id: $id) {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchBankAccountStatusData<{ bankAccountStatus: bankAccountStatus }>(query, { id })
+    .then(response => response.bankAccountStatus);
 }
 
-// gets a bank account status by name
+// Fetches a bank account status by name
 export async function fetchBankAccountStatusByName(name: string): Promise<bankAccountStatus> {
-  return await fetchBankAccountStatus<bankAccountStatus>(`/${name}`);
+  const query = `
+    query GetBankAccountStatusByName($name: String!) {
+      bankAccountStatus(name: $name) {
+        id
+        name
+      }
+    }
+  `;
+  return await fetchBankAccountStatusData<{ bankAccountStatus: bankAccountStatus }>(query, { name })
+    .then(response => response.bankAccountStatus);
 }
 
-// create a bank account status
-export async function createBankAccountStatus(newBankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
-  return await fetchBankAccountStatus<bankAccountStatus>('/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newBankAccountStatus),
-  });
-}
 
-// change a bank account status
-export async function updateBankAccountStatus(id: number, bankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
-  return await fetchBankAccountStatus<bankAccountStatus>(`/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(bankAccountStatus),
-  });
-}
 
-// delete bank account status
-export async function deleteBankAccountStatus(id: number): Promise<bankAccountStatus> {
-  return await fetchBankAccountStatus(`/${id}`, {
-    method: 'DELETE',
-  });
-}

@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@biomejs/biome": "1.9.4",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@tanstack/react-router": "^1.81.0",
     "concurrently": "^9.1.0"
   }
