@@ -21,12 +21,12 @@ class FileSystem:
             for root, dirs, files in os.walk(path):
                 # Skip ignored directories
                 dirs[:] = [d for d in dirs if os.path.join(root, d) not in ignore_dirs]
-                
+
                 level: int = root.replace(path, '').count(os.sep)
                 indent: str = ' ' * 4 * level
                 structure.append(f"{indent}{os.path.basename(root)}/")
                 subindent: str = ' ' * 4 * (level + 1)
-                
+
                 # Add files that are not in ignore_files
                 for f in files:
                     if f not in ignore_files:

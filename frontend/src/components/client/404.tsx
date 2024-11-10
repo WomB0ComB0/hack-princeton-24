@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { FiAlertCircle, FiHome, FiSearch } from 'react-icons/fi';
 
 export const NotFound = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
@@ -17,12 +16,6 @@ export const NotFound = () => {
       return () => clearTimeout(timer);
     }
   }, [timeLeft]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implement search functionality here
-    console.log('Searching for:', searchQuery);
-  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
@@ -38,28 +31,6 @@ export const NotFound = () => {
           Oops! The page you're looking for doesn't exist.
         </p>
       </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="w-full max-w-md mb-8"
-      >
-        <form onSubmit={handleSearch} className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Search for content..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-grow"
-          />
-          <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <FiSearch className="mr-2" />
-            Search
-          </Button>
-        </form>
-      </motion.div>
-
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

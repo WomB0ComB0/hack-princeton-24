@@ -10,13 +10,13 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as DashboardTransactionsImport } from './routes/dashboard/transactions'
-import { Route as DashboardStocksImport } from './routes/dashboard/stocks'
-import { Route as DashboardPlannerImport } from './routes/dashboard/planner'
-import { Route as DashboardCryptoImport } from './routes/dashboard/crypto'
-import { Route as DashboardAccountsImport } from './routes/dashboard/accounts'
+import { Route as rootRoute } from './routes/__root';
+import { Route as DashboardAccountsImport } from './routes/dashboard/accounts';
+import { Route as DashboardCryptoImport } from './routes/dashboard/crypto';
+import { Route as DashboardPlannerImport } from './routes/dashboard/planner';
+import { Route as DashboardStocksImport } from './routes/dashboard/stocks';
+import { Route as DashboardTransactionsImport } from './routes/dashboard/transactions';
+import { Route as IndexImport } from './routes/index';
 
 // Create/Update Routes
 
@@ -24,134 +24,134 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const DashboardTransactionsRoute = DashboardTransactionsImport.update({
   id: '/dashboard/transactions',
   path: '/dashboard/transactions',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const DashboardStocksRoute = DashboardStocksImport.update({
   id: '/dashboard/stocks',
   path: '/dashboard/stocks',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const DashboardPlannerRoute = DashboardPlannerImport.update({
   id: '/dashboard/planner',
   path: '/dashboard/planner',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const DashboardCryptoRoute = DashboardCryptoImport.update({
   id: '/dashboard/crypto',
   path: '/dashboard/crypto',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const DashboardAccountsRoute = DashboardAccountsImport.update({
   id: '/dashboard/accounts',
   path: '/dashboard/accounts',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
     '/dashboard/accounts': {
-      id: '/dashboard/accounts'
-      path: '/dashboard/accounts'
-      fullPath: '/dashboard/accounts'
-      preLoaderRoute: typeof DashboardAccountsImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/dashboard/accounts';
+      path: '/dashboard/accounts';
+      fullPath: '/dashboard/accounts';
+      preLoaderRoute: typeof DashboardAccountsImport;
+      parentRoute: typeof rootRoute;
+    };
     '/dashboard/crypto': {
-      id: '/dashboard/crypto'
-      path: '/dashboard/crypto'
-      fullPath: '/dashboard/crypto'
-      preLoaderRoute: typeof DashboardCryptoImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/dashboard/crypto';
+      path: '/dashboard/crypto';
+      fullPath: '/dashboard/crypto';
+      preLoaderRoute: typeof DashboardCryptoImport;
+      parentRoute: typeof rootRoute;
+    };
     '/dashboard/planner': {
-      id: '/dashboard/planner'
-      path: '/dashboard/planner'
-      fullPath: '/dashboard/planner'
-      preLoaderRoute: typeof DashboardPlannerImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/dashboard/planner';
+      path: '/dashboard/planner';
+      fullPath: '/dashboard/planner';
+      preLoaderRoute: typeof DashboardPlannerImport;
+      parentRoute: typeof rootRoute;
+    };
     '/dashboard/stocks': {
-      id: '/dashboard/stocks'
-      path: '/dashboard/stocks'
-      fullPath: '/dashboard/stocks'
-      preLoaderRoute: typeof DashboardStocksImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/dashboard/stocks';
+      path: '/dashboard/stocks';
+      fullPath: '/dashboard/stocks';
+      preLoaderRoute: typeof DashboardStocksImport;
+      parentRoute: typeof rootRoute;
+    };
     '/dashboard/transactions': {
-      id: '/dashboard/transactions'
-      path: '/dashboard/transactions'
-      fullPath: '/dashboard/transactions'
-      preLoaderRoute: typeof DashboardTransactionsImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/dashboard/transactions';
+      path: '/dashboard/transactions';
+      fullPath: '/dashboard/transactions';
+      preLoaderRoute: typeof DashboardTransactionsImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/dashboard/accounts': typeof DashboardAccountsRoute
-  '/dashboard/crypto': typeof DashboardCryptoRoute
-  '/dashboard/planner': typeof DashboardPlannerRoute
-  '/dashboard/stocks': typeof DashboardStocksRoute
-  '/dashboard/transactions': typeof DashboardTransactionsRoute
+  '/': typeof IndexRoute;
+  '/dashboard/accounts': typeof DashboardAccountsRoute;
+  '/dashboard/crypto': typeof DashboardCryptoRoute;
+  '/dashboard/planner': typeof DashboardPlannerRoute;
+  '/dashboard/stocks': typeof DashboardStocksRoute;
+  '/dashboard/transactions': typeof DashboardTransactionsRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/dashboard/accounts': typeof DashboardAccountsRoute
-  '/dashboard/crypto': typeof DashboardCryptoRoute
-  '/dashboard/planner': typeof DashboardPlannerRoute
-  '/dashboard/stocks': typeof DashboardStocksRoute
-  '/dashboard/transactions': typeof DashboardTransactionsRoute
+  '/': typeof IndexRoute;
+  '/dashboard/accounts': typeof DashboardAccountsRoute;
+  '/dashboard/crypto': typeof DashboardCryptoRoute;
+  '/dashboard/planner': typeof DashboardPlannerRoute;
+  '/dashboard/stocks': typeof DashboardStocksRoute;
+  '/dashboard/transactions': typeof DashboardTransactionsRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/dashboard/accounts': typeof DashboardAccountsRoute
-  '/dashboard/crypto': typeof DashboardCryptoRoute
-  '/dashboard/planner': typeof DashboardPlannerRoute
-  '/dashboard/stocks': typeof DashboardStocksRoute
-  '/dashboard/transactions': typeof DashboardTransactionsRoute
+  __root__: typeof rootRoute;
+  '/': typeof IndexRoute;
+  '/dashboard/accounts': typeof DashboardAccountsRoute;
+  '/dashboard/crypto': typeof DashboardCryptoRoute;
+  '/dashboard/planner': typeof DashboardPlannerRoute;
+  '/dashboard/stocks': typeof DashboardStocksRoute;
+  '/dashboard/transactions': typeof DashboardTransactionsRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
     | '/dashboard/accounts'
     | '/dashboard/crypto'
     | '/dashboard/planner'
     | '/dashboard/stocks'
-    | '/dashboard/transactions'
-  fileRoutesByTo: FileRoutesByTo
+    | '/dashboard/transactions';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/'
     | '/dashboard/accounts'
     | '/dashboard/crypto'
     | '/dashboard/planner'
     | '/dashboard/stocks'
-    | '/dashboard/transactions'
+    | '/dashboard/transactions';
   id:
     | '__root__'
     | '/'
@@ -159,17 +159,17 @@ export interface FileRouteTypes {
     | '/dashboard/crypto'
     | '/dashboard/planner'
     | '/dashboard/stocks'
-    | '/dashboard/transactions'
-  fileRoutesById: FileRoutesById
+    | '/dashboard/transactions';
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DashboardAccountsRoute: typeof DashboardAccountsRoute
-  DashboardCryptoRoute: typeof DashboardCryptoRoute
-  DashboardPlannerRoute: typeof DashboardPlannerRoute
-  DashboardStocksRoute: typeof DashboardStocksRoute
-  DashboardTransactionsRoute: typeof DashboardTransactionsRoute
+  IndexRoute: typeof IndexRoute;
+  DashboardAccountsRoute: typeof DashboardAccountsRoute;
+  DashboardCryptoRoute: typeof DashboardCryptoRoute;
+  DashboardPlannerRoute: typeof DashboardPlannerRoute;
+  DashboardStocksRoute: typeof DashboardStocksRoute;
+  DashboardTransactionsRoute: typeof DashboardTransactionsRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -179,11 +179,11 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardPlannerRoute: DashboardPlannerRoute,
   DashboardStocksRoute: DashboardStocksRoute,
   DashboardTransactionsRoute: DashboardTransactionsRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {

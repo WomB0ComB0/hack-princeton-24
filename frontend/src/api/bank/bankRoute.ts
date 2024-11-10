@@ -9,13 +9,13 @@ const BASE_URL = 'http://localhost:8080/api';
 // generic function that handles all CRUD operations
 async function fetchBank<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
-  
+
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
-  
-  return await response.json() as T;
+
+  return (await response.json()) as T;
 }
 
 //
@@ -75,7 +75,7 @@ export async function fetchBankByRoutingNumber(routing_number: number): Promise<
 export async function createBank(newBank: Partial<bank>): Promise<bank> {
   return await fetchBank<bank>('/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newBank),
   });
 }
@@ -84,7 +84,7 @@ export async function createBank(newBank: Partial<bank>): Promise<bank> {
 export async function updateBank(id: number, bank: Partial<bank>): Promise<bank> {
   return await fetchBank<bank>(`${id}`, {
     method: 'PUT',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(bank),
   });
 }
@@ -96,4 +96,3 @@ export async function deleteBank(id: number): Promise<bank> {
     method: 'DELETE',
   });
 }
-

@@ -4,20 +4,20 @@ export interface accountBalance {
   currency_id: number;
   amount: number;
   date_time: string;
-} 
+}
 
 const BASE_URL = 'http://localhost:8080/api';
 
 // generic function that handles all CRUD operations
 async function fetchAccountBalance<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, options);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error: ${response.status} - ${errorText}`);
-    }
-    
-    return await response.json() as T;
+  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Error: ${response.status} - ${errorText}`);
+  }
+
+  return (await response.json()) as T;
 }
 
 //
@@ -78,23 +78,23 @@ export async function fetchAccountBalanceByIdAndAmount(id: number, amount: numbe
 export async function createAccountBalance(newAccountBalance: Partial<accountBalance>): Promise<accountBalance> {
   return await fetchAccountBalance<accountBalance>('/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newAccountBalance),
-  })
+  });
 }
 
 // delete account balance (for manual entries)
 export async function deleteAccountBalance(id: number): Promise<accountBalance> {
   return await fetchAccountBalance(`/${id}`, {
     method: 'DELETE',
-  })
+  });
 }
 
 // update account balance (for manual entries)
 export async function updateAccountBalance(id: number, accountBalance: Partial<accountBalance>): Promise<accountBalance> {
   return await fetchAccountBalance<accountBalance>(`/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(accountBalance),
-  })
+  });
 }

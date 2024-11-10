@@ -8,13 +8,13 @@ const BASE_URL = 'http://localhost:8080/api';
 // generic function that handles all CRUD operations
 async function fetchBankAccountStatus<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
-  
+
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Error: ${response.status} - ${errorText}`);
   }
-  
-  return await response.json() as T;
+
+  return (await response.json()) as T;
 }
 
 // gets all bank account statuses
@@ -36,7 +36,7 @@ export async function fetchBankAccountStatusByName(name: string): Promise<bankAc
 export async function createBankAccountStatus(newBankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus<bankAccountStatus>('/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newBankAccountStatus),
   });
 }
@@ -45,7 +45,7 @@ export async function createBankAccountStatus(newBankAccountStatus: Partial<bank
 export async function updateBankAccountStatus(id: number, bankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus<bankAccountStatus>(`/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(bankAccountStatus),
   });
 }
