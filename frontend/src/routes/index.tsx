@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { FileRoute } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import {
@@ -18,7 +19,6 @@ import {
   FiMove,
   FiPieChart,
 } from 'react-icons/fi';
-import { Badge, Reorder } from 'react-reorder';
 
 interface ChartItem {
   id: string;
@@ -26,7 +26,11 @@ interface ChartItem {
   title: string;
 }
 
-export default function IndexPage() {
+export const Route = new FileRoute('/').createRoute({
+  component: IndexComponent,
+});
+
+export default function IndexComponent() {
   const [description, setDescription] = useState('');
 
   return (

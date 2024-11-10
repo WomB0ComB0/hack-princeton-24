@@ -2,12 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FiAlertCircle, FiHome, FiSearch } from 'react-icons/fi';
 
-export default function NotFound() {
+export const NotFound = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [timeLeft, setTimeLeft] = useState(10);
 
@@ -78,4 +78,4 @@ export default function NotFound() {
       </motion.div>
     </div>
   );
-}
+};

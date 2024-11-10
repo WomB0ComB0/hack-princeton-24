@@ -1,11 +1,16 @@
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import useDebugRender from 'tilg';
+import { NotFound } from './components/client';
 import { routeTree } from './routeTree.gen';
 
 // Set up a Router instance
 const router = createRouter({
   routeTree,
+  context: {
+    head: '',
+  },
   defaultPreload: 'intent',
+  defaultNotFoundComponent: <NotFound />,
 });
 
 // Register things for typesafety
