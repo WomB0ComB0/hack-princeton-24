@@ -3,6 +3,8 @@ interface transactionStatus {
   name: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchTransactionStatus<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -22,17 +24,17 @@ async function fetchTransactionStatus<T>(endpoint: string, options: RequestInit 
 //
 
 // gets all transaction statuses
-async function fetchAllTransactionStatus(): Promise<transactionStatus[]> {
+export async function fetchAllTransactionStatus(): Promise<transactionStatus[]> {
   return await fetchTransactionStatus<transactionStatus[]>('/');
 }
 
 // gets a transactionStatus by id
-async function fetchTransactionStatusesById(id: number): Promise<transactionStatus[]> {
+export async function fetchTransactionStatusesById(id: number): Promise<transactionStatus[]> {
   return await fetchTransactionStatus<transactionStatus[]>(`/${id}`);
 }
 
 // gets a transactionStatus by name
-async function fetchTransactionStatusesByName(name: string): Promise<transactionStatus[]> {
+export async function fetchTransactionStatusesByName(name: string): Promise<transactionStatus[]> {
   return await fetchTransactionStatus<transactionStatus[]>(`/${name}`);
 }
 
@@ -43,12 +45,12 @@ async function fetchTransactionStatusesByName(name: string): Promise<transaction
 //
 
 // gets a transactionStatus by id
-async function fetchTransactionStatusById(id: number): Promise<transactionStatus> {
+export async function fetchTransactionStatusById(id: number): Promise<transactionStatus> {
   return await fetchTransactionStatus<transactionStatus>(`/${id}`);
 }
 
 // gets a transactionStatus by name
-async function fetchTransactionStatusByName(name: string): Promise<transactionStatus> {
+export async function fetchTransactionStatusByName(name: string): Promise<transactionStatus> {
   return await fetchTransactionStatus<transactionStatus>(`/${name}`);
 }
 
@@ -60,7 +62,7 @@ async function fetchTransactionStatusByName(name: string): Promise<transactionSt
 //
 
 // create a transactionStatus
-async function createTransactionStatus(newTransactionStatus: Partial<transactionStatus>): Promise<transactionStatus> {
+export async function createTransactionStatus(newTransactionStatus: Partial<transactionStatus>): Promise<transactionStatus> {
   return await fetchTransactionStatus<transactionStatus>('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -69,7 +71,7 @@ async function createTransactionStatus(newTransactionStatus: Partial<transaction
 }
 
 // change a transactionStatus
-async function updateTransactionStatus(id: number, transactionStatus: Partial<transactionStatus>): Promise<transactionStatus> {
+export async function updateTransactionStatus(id: number, transactionStatus: Partial<transactionStatus>): Promise<transactionStatus> {
   return await fetchTransactionStatus<transactionStatus>(`/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json'},
@@ -78,7 +80,7 @@ async function updateTransactionStatus(id: number, transactionStatus: Partial<tr
 }
 
 // delete a transactionStatus
-async function deleteTransactionStatus(id: number): Promise<transactionStatus> {
+export async function deleteTransactionStatus(id: number): Promise<transactionStatus> {
   return await fetchTransactionStatus(`/${id}`, {
     method: 'DELETE',
   });

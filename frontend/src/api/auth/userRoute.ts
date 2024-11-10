@@ -28,37 +28,37 @@ async function fetchUser<T>(endpoint: string, options: RequestInit = {}): Promis
 //
 
 // fetches all users
-async function fetchUsers(): Promise<user[]> {
+export async function fetchUsers(): Promise<user[]> {
     return await fetchUser<user[]>('/');
 }
 
 // fetches all users by first name
-async function fetchUsersByFirstName(first_name: string): Promise<user[]> {
+export async function fetchUsersByFirstName(first_name: string): Promise<user[]> {
     return await fetchUser<user[]>(`/${first_name}`);
 }
 
 // fetches all users by last name
-async function fetchUsersByLastName(last_name: string): Promise<user[]> {
+export async function fetchUsersByLastName(last_name: string): Promise<user[]> {
     return await fetchUser<user[]>(`/${last_name}`);
 }
 
 // fetches all users by email
-async function fetchUsersByEmail(email: string): Promise<user[]> {
+export async function fetchUsersByEmail(email: string): Promise<user[]> {
     return await fetchUser<user[]>(`/${email}`);
 }
 
 // fetches all users by id
-async function fetchUsersById(id: string): Promise<user[]> {
+export async function fetchUsersById(id: string): Promise<user[]> {
     return await fetchUser<user[]>(`/${id}`);
 }
 
 // fetches all users by birthdate
-async function fetchUsersByBirthDate(birthdate: string): Promise<user[]> {
+export async function fetchUsersByBirthDate(birthdate: string): Promise<user[]> {
     return await fetchUser<user[]>(`/${birthdate}`);
 }
 
 // fetches all users by phone number
-async function fetchUsersByPhoneNumber(phone_number: string): Promise<user[]> {
+export async function fetchUsersByPhoneNumber(phone_number: string): Promise<user[]> {
     return await fetchUser<user[]>(`/${phone_number}`);
 }
 
@@ -71,32 +71,32 @@ async function fetchUsersByPhoneNumber(phone_number: string): Promise<user[]> {
 //
 
 // fetches a user by first name
-async function fetchUserByFirstName(first_name: string): Promise<user> {
+export async function fetchUserByFirstName(first_name: string): Promise<user> {
     return await fetchUser<user>(`/${first_name}`);
 }
 
 // fetches a user by last name
-async function fetchUserByLastName(last_name: string): Promise<user> {
+export async function fetchUserByLastName(last_name: string): Promise<user> {
     return await fetchUser<user>(`/${last_name}`);
 }
 
 // fetches a user by email
-async function fetchUserByEmail(email: string): Promise<user> {
+export async function fetchUserByEmail(email: string): Promise<user> {
     return await fetchUser<user>(`/${email}`);
 }
 
 // fetches a user by id
-async function fetchUserById(id: string): Promise<user> {
+export async function fetchUserById(id: string): Promise<user> {
     return await fetchUser<user>(`/${id}`);
 }
 
 // fetches a user by birthdate
-async function fetchUserByBirthDate(birthdate: string): Promise<user> {
+export async function fetchUserByBirthDate(birthdate: string): Promise<user> {
     return await fetchUser<user>(`/${birthdate}`);
 }
 
 // fetches a user by phone number
-async function fetchUserByPhoneNumber(phone_number: string): Promise<user> {
+export async function fetchUserByPhoneNumber(phone_number: string): Promise<user> {
     return await fetchUser<user>(`/${phone_number}`);
 }
 
@@ -110,7 +110,7 @@ async function fetchUserByPhoneNumber(phone_number: string): Promise<user> {
 
 
 // creates a user
-async function createUser(newUser: Partial<user>): Promise<user> {
+export async function createUser(newUser: Partial<user>): Promise<user> {
     return await fetchUser<user>('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
@@ -119,7 +119,7 @@ async function createUser(newUser: Partial<user>): Promise<user> {
 }
 
 // updates a user
-async function updateUser(id: String, user: Partial<user>): Promise<user> {
+export async function updateUser(id: String, user: Partial<user>): Promise<user> {
     return await fetchUser<user>(`/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -128,7 +128,7 @@ async function updateUser(id: String, user: Partial<user>): Promise<user> {
 }
 
 // deletes a user
-async function deleteUser(id: String): Promise<user> {
+export async function deleteUser(id: String): Promise<user> {
     return await fetchUser(`/${id}`, {
         method: 'DELETE',
     });

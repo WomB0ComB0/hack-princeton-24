@@ -3,6 +3,8 @@ interface bankAccount {
   name: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchBankAccount<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -16,17 +18,17 @@ async function fetchBankAccount<T>(endpoint: string, options: RequestInit = {}):
 }
 
 // get all bank accounts
-async function fetchAllBankAccounts(): Promise<bankAccount[]> {
+export async function fetchAllBankAccounts(): Promise<bankAccount[]> {
   return await fetchBankAccount<bankAccount[]>('/');
 }
 
 // get a bank account
-async function fetchBankAccountById(bankId: number): Promise<bankAccount> {
+export async function fetchBankAccountById(bankId: number): Promise<bankAccount> {
   return await fetchBankAccount<bankAccount>(`/${bankId}`);
 }
 
 // create a bank account
-async function createBankAccount(newBankAccount: Partial<bankAccount>): Promise<bankAccount> {
+export async function createBankAccount(newBankAccount: Partial<bankAccount>): Promise<bankAccount> {
   return await fetchBankAccount<bankAccount>('/', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -35,6 +37,6 @@ async function createBankAccount(newBankAccount: Partial<bankAccount>): Promise<
 }
 
 // delete a bank account
-async function deleteBankAccount(bankId: number): Promise<bankAccount> {
+export async function deleteBankAccount(bankId: number): Promise<bankAccount> {
   return fetchBankAccount(`/${bankId}`);
 }

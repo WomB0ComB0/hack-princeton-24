@@ -3,6 +3,8 @@ interface bankAccountStatus {
   name: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchBankAccountStatus<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -16,22 +18,22 @@ async function fetchBankAccountStatus<T>(endpoint: string, options: RequestInit 
 }
 
 // gets all bank account statuses
-async function fetchAllBankAccountStatus(): Promise<bankAccountStatus[]> {
+export async function fetchAllBankAccountStatus(): Promise<bankAccountStatus[]> {
   return await fetchBankAccountStatus<bankAccountStatus[]>('/');
 }
 
 // gets a bank account status by id
-async function fetchBankAccountStatusById(id: number): Promise<bankAccountStatus> {
+export async function fetchBankAccountStatusById(id: number): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus<bankAccountStatus>(`/${id}`);
 }
 
 // gets a bank account status by name
-async function fetchBankAccountStatusByName(name: string): Promise<bankAccountStatus> {
+export async function fetchBankAccountStatusByName(name: string): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus<bankAccountStatus>(`/${name}`);
 }
 
 // create a bank account status
-async function createBankAccountStatus(newBankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
+export async function createBankAccountStatus(newBankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus<bankAccountStatus>('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -40,7 +42,7 @@ async function createBankAccountStatus(newBankAccountStatus: Partial<bankAccount
 }
 
 // change a bank account status
-async function updateBankAccountStatus(id: number, bankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
+export async function updateBankAccountStatus(id: number, bankAccountStatus: Partial<bankAccountStatus>): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus<bankAccountStatus>(`/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json'},
@@ -49,7 +51,7 @@ async function updateBankAccountStatus(id: number, bankAccountStatus: Partial<ba
 }
 
 // delete bank account status
-async function deleteBankAccountStatus(id: number): Promise<bankAccountStatus> {
+export async function deleteBankAccountStatus(id: number): Promise<bankAccountStatus> {
   return await fetchBankAccountStatus(`/${id}`, {
     method: 'DELETE',
   });

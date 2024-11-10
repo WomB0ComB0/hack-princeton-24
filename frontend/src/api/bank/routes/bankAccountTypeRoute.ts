@@ -3,6 +3,8 @@ interface bankAccountType {
   name: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchBankAccountType<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -16,22 +18,22 @@ async function fetchBankAccountType<T>(endpoint: string, options: RequestInit = 
 }
 
 // gets all bank account types
-async function fetchAllBankAccountTypes(): Promise<bankAccountType[]> {
+export async function fetchAllBankAccountTypes(): Promise<bankAccountType[]> {
   return await fetchBankAccountType<bankAccountType[]>('/');
 }
 
 // gets a bank account type by id
-async function fetchBankAccountTypeById(id: number): Promise<bankAccountType> {
+export async function fetchBankAccountTypeById(id: number): Promise<bankAccountType> {
   return await fetchBankAccountType<bankAccountType>(`/${id}`);
 }
 
 // gets a bank account type by name
-async function fetchBankAccountTypeByName(name: string): Promise<bankAccountType> {
+export async function fetchBankAccountTypeByName(name: string): Promise<bankAccountType> {
   return await fetchBankAccountType<bankAccountType>(`/${name}`);
 }
 
 // create a bank account type
-async function createBankAccountType(newBankAccountType: Partial<bankAccountType>): Promise<bankAccountType> {
+export async function createBankAccountType(newBankAccountType: Partial<bankAccountType>): Promise<bankAccountType> {
   return await fetchBankAccountType<bankAccountType>('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -40,7 +42,7 @@ async function createBankAccountType(newBankAccountType: Partial<bankAccountType
 }
 
 // change a bank account type
-async function updateBankAccountType(id: number, bankAccountType: Partial<bankAccountType>): Promise<bankAccountType> {
+export async function updateBankAccountType(id: number, bankAccountType: Partial<bankAccountType>): Promise<bankAccountType> {
   return await fetchBankAccountType<bankAccountType>(`/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json'},
@@ -49,7 +51,7 @@ async function updateBankAccountType(id: number, bankAccountType: Partial<bankAc
 }
 
 // delete bank account type
-async function deleteBankAccountType(id: number): Promise<bankAccountType> {
+export async function deleteBankAccountType(id: number): Promise<bankAccountType> {
   return await fetchBankAccountType(`/${id}`, {
     method: 'DELETE',
   });

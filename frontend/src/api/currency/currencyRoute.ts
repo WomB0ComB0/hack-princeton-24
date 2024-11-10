@@ -3,6 +3,8 @@ interface currency {
   name: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchCurrency<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -22,17 +24,17 @@ async function fetchCurrency<T>(endpoint: string, options: RequestInit = {}): Pr
 //
 
 // gets all currencies
-async function fetchAllCurrencies(): Promise<currency[]> {
+export async function fetchAllCurrencies(): Promise<currency[]> {
   return await fetchCurrency<currency[]>('/');
 }
 
 // gets a currency by id
-async function fetchCurrenciesById(id: number): Promise<currency[]> {
+export async function fetchCurrenciesById(id: number): Promise<currency[]> {
   return await fetchCurrency<currency[]>(`/${id}`);
 }
 
 // gets a currency by name
-async function fetchCurrenciesByName(name: string): Promise<currency[]> {
+export async function fetchCurrenciesByName(name: string): Promise<currency[]> {
   return await fetchCurrency<currency[]>(`/${name}`);
 }
 
@@ -43,12 +45,12 @@ async function fetchCurrenciesByName(name: string): Promise<currency[]> {
 //
 
 // gets a currency by id
-async function fetchCurrencyById(id: number): Promise<currency> {
+export async function fetchCurrencyById(id: number): Promise<currency> {
   return await fetchCurrency<currency>(`/${id}`);
 }
 
 // gets a currency by name
-async function fetchCurrencyByName(name: string): Promise<currency> {
+export async function fetchCurrencyByName(name: string): Promise<currency> {
   return await fetchCurrency<currency>(`/${name}`);
 }
 
@@ -60,7 +62,7 @@ async function fetchCurrencyByName(name: string): Promise<currency> {
 //
 
 // create a currency
-async function createCurrency(newCurrency: Partial<currency>): Promise<currency> {
+export async function createCurrency(newCurrency: Partial<currency>): Promise<currency> {
   return await fetchCurrency<currency>('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -69,7 +71,7 @@ async function createCurrency(newCurrency: Partial<currency>): Promise<currency>
 }
 
 // change a currency
-async function updateCurrency(id: number, currency: Partial<currency>): Promise<currency> {
+export async function updateCurrency(id: number, currency: Partial<currency>): Promise<currency> {
   return await fetchCurrency<currency>(`/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json'},
@@ -78,7 +80,7 @@ async function updateCurrency(id: number, currency: Partial<currency>): Promise<
 }
 
 // delete a currency
-async function deleteCurrency(id: number): Promise<currency> {
+export async function deleteCurrency(id: number): Promise<currency> {
   return await fetchCurrency(`/${id}`, {
     method: 'DELETE',
   });

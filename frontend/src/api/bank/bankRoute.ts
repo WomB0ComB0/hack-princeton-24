@@ -4,6 +4,8 @@ interface bank {
   routing_number: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchBank<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -23,22 +25,22 @@ async function fetchBank<T>(endpoint: string, options: RequestInit = {}): Promis
 //
 
 // get all banks
-async function fetchAllBanks(): Promise<bank[]> {
+export async function fetchAllBanks(): Promise<bank[]> {
   return await fetchBank<bank[]>('/');
 }
 
 // get banks by id 
-async function fetchBanksById(id: number): Promise<bank[]> {
+export async function fetchBanksById(id: number): Promise<bank[]> {
   return await fetchBank<bank[]>(`/${id}`);
 }
 
 // get banks by name
-async function fetchBanksByName(name: string): Promise<bank[]> {
+export async function fetchBanksByName(name: string): Promise<bank[]> {
   return await fetchBank<bank[]>(`/${name}`);
 }
 
 // get bank by routing number 
-async function fetchBanksByRoutingNumber(routing_number: number): Promise<bank[]> {
+export async function fetchBanksByRoutingNumber(routing_number: number): Promise<bank[]> {
   return await fetchBank<bank[]>(`/${routing_number}`);
 }
 
@@ -49,17 +51,17 @@ async function fetchBanksByRoutingNumber(routing_number: number): Promise<bank[]
 //
 
 // get bank by id 
-async function fetchBankById(id: number): Promise<bank> {
+export async function fetchBankById(id: number): Promise<bank> {
   return await fetchBank<bank>(`/${id}`);
 }
 
 // get bank by name
-async function fetchBankByName(name: string): Promise<bank> {
+export async function fetchBankByName(name: string): Promise<bank> {
   return await fetchBank<bank>(`/${name}`);
 }
 
 // get bank by routing number 
-async function fetchBankByRoutingNumber(routing_number: number): Promise<bank> {
+export async function fetchBankByRoutingNumber(routing_number: number): Promise<bank> {
   return await fetchBank<bank>(`/${routing_number}`);
 }
 
@@ -70,7 +72,7 @@ async function fetchBankByRoutingNumber(routing_number: number): Promise<bank> {
 //
 
 // create a new bank (manual entries)
-async function createBank(newBank: Partial<bank>): Promise<bank> {
+export async function createBank(newBank: Partial<bank>): Promise<bank> {
   return await fetchBank<bank>('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -79,7 +81,7 @@ async function createBank(newBank: Partial<bank>): Promise<bank> {
 }
 
 // update a bank (i.e. bank details incorrect) 
-async function updateBank(id: number, bank: Partial<bank>): Promise<bank> {
+export async function updateBank(id: number, bank: Partial<bank>): Promise<bank> {
   return await fetchBank<bank>(`${id}`, {
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
@@ -89,7 +91,7 @@ async function updateBank(id: number, bank: Partial<bank>): Promise<bank> {
 
 
 // delete a bank (manual entries) 
-async function deleteBank(id: number): Promise<bank> {
+export async function deleteBank(id: number): Promise<bank> {
   return await fetchBank(`/${id}`, {
     method: 'DELETE',
   });

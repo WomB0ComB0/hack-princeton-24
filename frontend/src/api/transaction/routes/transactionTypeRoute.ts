@@ -3,6 +3,8 @@ interface transactionType {
   name: string;
 }
 
+const BASE_URL = 'http://localhost:8080/api';
+
 // generic function that handles all CRUD operations
 async function fetchTransactionType<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
@@ -22,17 +24,17 @@ async function fetchTransactionType<T>(endpoint: string, options: RequestInit = 
 //
 
 // gets all transaction types
-async function fetchAllTransactionTypes(): Promise<transactionType[]> {
+export async function fetchAllTransactionTypes(): Promise<transactionType[]> {
   return await fetchTransactionType<transactionType[]>('/');
 }
 
 // gets a transactionType by id
-async function fetchTransactionTypesById(id: number): Promise<transactionType[]> {
+export async function fetchTransactionTypesById(id: number): Promise<transactionType[]> {
   return await fetchTransactionType<transactionType[]>(`/${id}`);
 }
 
 // gets a transactionType by name
-async function fetchTransactionsTypeByName(name: string): Promise<transactionType[]> {
+export async function fetchTransactionsTypeByName(name: string): Promise<transactionType[]> {
   return await fetchTransactionType<transactionType[]>(`/${name}`);
 }
 
@@ -43,12 +45,12 @@ async function fetchTransactionsTypeByName(name: string): Promise<transactionTyp
 //
 
 // gets a transactionType by id
-async function fetchTransactionTypeById(id: number): Promise<transactionType[]> {
+export async function fetchTransactionTypeById(id: number): Promise<transactionType[]> {
   return await fetchTransactionType<transactionType[]>(`/${id}`);
 }
 
 // gets a transactionType by name
-async function fetchTransactionTypeByName(name: string): Promise<transactionType[]> {
+export async function fetchTransactionTypeByName(name: string): Promise<transactionType[]> {
   return await fetchTransactionType<transactionType[]>(`/${name}`);
 }
 
@@ -59,7 +61,7 @@ async function fetchTransactionTypeByName(name: string): Promise<transactionType
 //
 
 // create a transactionType
-async function createTransactionType(newTransactionType: Partial<transactionType>): Promise<transactionType> {
+export async function createTransactionType(newTransactionType: Partial<transactionType>): Promise<transactionType> {
   return await fetchTransactionType<transactionType>('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
@@ -68,7 +70,7 @@ async function createTransactionType(newTransactionType: Partial<transactionType
 }
 
 // change a transactionType
-async function updateTransactionType(id: number, transactionType: Partial<transactionType>): Promise<transactionType> {
+export async function updateTransactionType(id: number, transactionType: Partial<transactionType>): Promise<transactionType> {
   return await fetchTransactionType<transactionType>(`/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json'},
@@ -77,7 +79,7 @@ async function updateTransactionType(id: number, transactionType: Partial<transa
 }
 
 // delete a transactionType
-async function deleteTransactionType(id: number): Promise<transactionType> {
+export async function deleteTransactionType(id: number): Promise<transactionType> {
   return await fetchTransactionType(`/${id}`, {
     method: 'DELETE',
   });
