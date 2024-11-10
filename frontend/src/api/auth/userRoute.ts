@@ -9,8 +9,6 @@ interface user {
 
 const BASE_URL = 'http://localhost:8080/api'; 
 
-
-
 // generic function that handles all CRUD operations
 async function fetchUser<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${BASE_URL}${endpoint}`, options);
