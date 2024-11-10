@@ -3,7 +3,7 @@ export interface transactionStatus {
   name: string;
 }
 
-const BASE_URL = 'http://localhost:8080/graphql';
+const BASE_URL = 'https://backend-purple-dawn-8577.fly.dev/graphql';
 
 // Generic function to handle all GraphQL queries for transaction statuses
 async function fetchTransactionStatusData<T>(

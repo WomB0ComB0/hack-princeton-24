@@ -39,6 +39,8 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
+    "@radix-ui/react-scroll-area": "^1.2.0",
+    "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
@@ -62,6 +64,7 @@
     "react-icons": "^5.3.0",
     "react-reorder": "3.0.0-alpha.7",
     "react-type-animation": "^3.2.0",
+    "recharts": "^2.13.3",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
@@ -106,5 +109,5 @@
     "vite-plugin-mkcert": "1.17.6",
     "vite-tsconfig-paths": "5.1.1"
   },
-  "packageManager": "pnpm@9.12.3"
+  "packageManager": "bun@1.1.34"
 }

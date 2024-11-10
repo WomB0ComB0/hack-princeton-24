@@ -7,7 +7,7 @@ export interface user {
   phone_number: string;
 }
 
-const BASE_URL = 'http://localhost:8080/graphql';
+const BASE_URL = 'https://backend-purple-dawn-8577.fly.dev/graphql';
 
 // Generic function to handle all GraphQL queries
 async function fetchUserData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {

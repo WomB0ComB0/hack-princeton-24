@@ -20,9 +20,6 @@ import { Route as DashboardPlannerImport } from './routes/dashboard/planner'
 import { Route as DashboardCryptoImport } from './routes/dashboard/crypto'
 import { Route as DashboardAccountsImport } from './routes/dashboard/accounts'
 import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
-import { Route as authSignupImport } from './routes/(auth)/signup'
-import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as authAuthLayoutImport } from './routes/(auth)/_auth.layout'
 
 // Create Virtual Routes
 
@@ -77,24 +74,6 @@ const DashboardLayoutRoute = DashboardLayoutImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
-const authSignupRoute = authSignupImport.update({
-  id: '/(auth)/signup',
-  path: '/signup',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const authLoginRoute = authLoginImport.update({
-  id: '/(auth)/login',
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const authAuthLayoutRoute = authAuthLayoutImport.update({
-  id: '/(auth)/_auth/layout',
-  path: '/layout',
-  getParentRoute: () => rootRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -104,20 +83,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/login': {
-      id: '/(auth)/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/signup': {
-      id: '/(auth)/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof authSignupImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -169,13 +134,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTransactionsImport
       parentRoute: typeof DashboardImport
     }
-    '/(auth)/_auth/layout': {
-      id: '/(auth)/_auth/layout'
-      path: '/layout'
-      fullPath: '/layout'
-      preLoaderRoute: typeof authAuthLayoutImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -205,35 +163,27 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof authLoginRoute
-  '/signup': typeof authSignupRoute
   '/dashboard': typeof DashboardLayoutRoute
   '/dashboard/accounts': typeof DashboardAccountsRoute
   '/dashboard/crypto': typeof DashboardCryptoRoute
   '/dashboard/planner': typeof DashboardPlannerRoute
   '/dashboard/stocks': typeof DashboardStocksRoute
   '/dashboard/transactions': typeof DashboardTransactionsRoute
-  '/layout': typeof authAuthLayoutRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof authLoginRoute
-  '/signup': typeof authSignupRoute
   '/dashboard': typeof DashboardLayoutRoute
   '/dashboard/accounts': typeof DashboardAccountsRoute
   '/dashboard/crypto': typeof DashboardCryptoRoute
   '/dashboard/planner': typeof DashboardPlannerRoute
   '/dashboard/stocks': typeof DashboardStocksRoute
   '/dashboard/transactions': typeof DashboardTransactionsRoute
-  '/layout': typeof authAuthLayoutRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(auth)/signup': typeof authSignupRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/_layout': typeof DashboardLayoutRoute
   '/dashboard/accounts': typeof DashboardAccountsRoute
@@ -241,39 +191,30 @@ export interface FileRoutesById {
   '/dashboard/planner': typeof DashboardPlannerRoute
   '/dashboard/stocks': typeof DashboardStocksRoute
   '/dashboard/transactions': typeof DashboardTransactionsRoute
-  '/(auth)/_auth/layout': typeof authAuthLayoutRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/login'
-    | '/signup'
     | '/dashboard'
     | '/dashboard/accounts'
     | '/dashboard/crypto'
     | '/dashboard/planner'
     | '/dashboard/stocks'
     | '/dashboard/transactions'
-    | '/layout'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/login'
-    | '/signup'
     | '/dashboard'
     | '/dashboard/accounts'
     | '/dashboard/crypto'
     | '/dashboard/planner'
     | '/dashboard/stocks'
     | '/dashboard/transactions'
-    | '/layout'
   id:
     | '__root__'
     | '/'
-    | '/(auth)/login'
-    | '/(auth)/signup'
     | '/dashboard'
     | '/dashboard/_layout'
     | '/dashboard/accounts'
@@ -281,24 +222,17 @@ export interface FileRouteTypes {
     | '/dashboard/planner'
     | '/dashboard/stocks'
     | '/dashboard/transactions'
-    | '/(auth)/_auth/layout'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  authLoginRoute: typeof authLoginRoute
-  authSignupRoute: typeof authSignupRoute
   DashboardRoute: typeof DashboardRouteWithChildren
-  authAuthLayoutRoute: typeof authAuthLayoutRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  authLoginRoute: authLoginRoute,
-  authSignupRoute: authSignupRoute,
   DashboardRoute: DashboardRouteWithChildren,
-  authAuthLayoutRoute: authAuthLayoutRoute,
 }
 
 export const routeTree = rootRoute
@@ -312,20 +246,11 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/(auth)/login",
-        "/(auth)/signup",
-        "/dashboard",
-        "/(auth)/_auth/layout"
+        "/dashboard"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/(auth)/login": {
-      "filePath": "(auth)/login.tsx"
-    },
-    "/(auth)/signup": {
-      "filePath": "(auth)/signup.tsx"
     },
     "/dashboard": {
       "filePath": "dashboard",
@@ -361,9 +286,6 @@ export const routeTree = rootRoute
     "/dashboard/transactions": {
       "filePath": "dashboard/transactions.tsx",
       "parent": "/dashboard"
-    },
-    "/(auth)/_auth/layout": {
-      "filePath": "(auth)/_auth.layout.tsx"
     }
   }
 }

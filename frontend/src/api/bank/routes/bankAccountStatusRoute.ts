@@ -3,7 +3,7 @@ export interface bankAccountStatus {
   name: string;
 }
 
-const BASE_URL = 'http://localhost:8080/graphql';
+const BASE_URL = 'https://backend-purple-dawn-8577.fly.dev/graphql';
 
 // Generic function to handle all GraphQL queries for bank account statuses
 async function fetchBankAccountStatusData<T>(

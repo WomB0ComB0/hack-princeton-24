@@ -4,7 +4,7 @@ export interface bank {
   routing_number: string;
 }
 
-const BASE_URL = 'http://localhost:8080/graphql';
+const BASE_URL = 'https://backend-purple-dawn-8577.fly.dev/graphql';
 
 // Generic function to handle all GraphQL queries for banks
 async function fetchBankData<T>(query: string, variables: Record<string, any> = {}): Promise<T> {

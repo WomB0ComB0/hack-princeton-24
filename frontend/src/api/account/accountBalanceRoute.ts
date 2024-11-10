@@ -6,7 +6,7 @@ export interface accountBalance {
   date_time: string;
 }
 
-const BASE_URL = 'http://localhost:8080/graphql';
+const BASE_URL = 'https://backend-purple-dawn-8577.fly.dev/graphql';
 
 // Generic function to handle all GraphQL queries for account balances
 async function fetchAccountBalanceData<T>(
@@ -95,20 +95,25 @@ export async function fetchAccountBalancesByIdAndAmount(
   amount: number,
 ): Promise<accountBalance[]> {
   const query = `
-    query GetAccountBalancesByIdAndAmount($id: Int!, $amount: Float!) {
-      accountBalancesByIdAndAmount(id: $id, amount: $amount) {
+    query {
+      balances {
         id
-        bank_account_id
-        currency_id
+        bankAccount {
+          id
+        }
+        currency {
+          symbol
+        }
         amount
-        date_time
+        dateTime
       }
     }
   `;
-  return await fetchAccountBalanceData<{ accountBalancesByIdAndAmount: accountBalance[] }>(query, {
+
+  return await fetchAccountBalanceData<{ balances: accountBalance[] }>(query, {
     id,
     amount,
-  }).then((response) => response.accountBalancesByIdAndAmount);
+  }).then((response) => response.balances).finally(() => console.log('fetchAccountBalancesByIdAndAmount'));
 }
 
 //

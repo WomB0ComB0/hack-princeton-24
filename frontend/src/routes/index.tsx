@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { createFileRoute } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   FiArrowRight,
   FiBarChart2,
@@ -18,13 +18,32 @@ import {
   FiLayers,
   FiMove,
   FiPieChart,
+  FiChevronLeft,
+  FiChevronRight,
 } from 'react-icons/fi';
-import { ChatbotComponent } from '@/components/client'
+import { request, gql } from 'graphql-request';
+import { Line, LineChart, Bar, BarChart, Pie, PieChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
 interface ChartItem {
   id: string;
   type: 'pie' | 'line';
   title: string;
 }
+
+interface Balance {
+  id: string;
+  bankAccount: {
+    id: string;
+  };
+  currency: {
+    symbol: string;
+  };
+  amount: number;
+  dateTime: string;
+}
+
+const BASE_URL = 'https://backend-purple-dawn-8577.fly.dev/graphql';
 
 export const Route = createFileRoute('/')({
   component: IndexComponent,
@@ -32,6 +51,88 @@ export const Route = createFileRoute('/')({
 
 function IndexComponent() {
   const [description, setDescription] = useState('');
+  const [balances, setBalances] = useState<Balance[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+
+  useEffect(() => {
+    fetchBalances();
+  }, []);
+
+  const fetchBalances = async () => {
+    const query = gql`
+      query {
+        balances {
+          id
+          bankAccount {
+            id
+          }
+          currency {
+            symbol
+          }
+          amount
+          dateTime
+        }
+      }
+    `;
+
+    try {
+      const data = await request(BASE_URL, query);
+      setBalances(generateDummyData());
+    } catch (error) {
+      console.error('Error fetching balances:', error);
+      setBalances(generateDummyData());
+    }
+  };
+
+  const generateDummyData = (): Balance[] => {
+    const currencies = [
+      { symbol: '$' },
+      { symbol: '€' },
+      { symbol: '£' },
+      { symbol: '¥' },
+      { symbol: '₹' },
+    ];
+    const bankAccounts = [
+      { id: '1234567890' },
+      { id: '9876543210' },
+      { id: '2468101214' },
+      { id: '1357902468' },
+      { id: '3692581470' },
+    ];
+
+    return Array.from({ length: 52 }, (_, index) => ({
+      id: (index + 1).toString(),
+      bankAccount: bankAccounts[Math.floor(Math.random() * bankAccounts.length)],
+      currency: currencies[Math.floor(Math.random() * currencies.length)],
+      amount: Math.floor(Math.random() * 10000) + 100,
+      dateTime: new Date(2023, 11, 20 + Math.floor(index / 2), 12, 0, 0).toISOString(),
+    }));
+  };
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = balances.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Prepare data for charts
+  const lineChartData = balances.map(balance => ({
+    date: new Date(balance.dateTime).toLocaleDateString(),
+    amount: balance.amount
+  }));
+
+  const pieChartData = balances.reduce((acc, balance) => {
+    const currency = balance.currency.symbol;
+    if (!acc[currency]) {
+      acc[currency] = 0;
+    }
+    acc[currency] += balance.amount;
+    return acc;
+  }, {});
+
+  const pieChartDataArray = Object.entries(pieChartData).map(([name, value]) => ({ name, value }));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -140,21 +241,113 @@ function IndexComponent() {
                   rows={4}
                 />
               </div>
-              <Button>Generate Report</Button>
+              <Button onClick={fetchBalances}>Generate Report</Button>
               <div className="mt-8 border border-gray-200 dark:border-gray-700 rounded-lg p-4 relative">
                 <div className="text-center text-gray-500 dark:text-gray-400 mb-4">
-                  Generated Excel Preview
+                  Generated Balance Report
                 </div>
-                <Tabs defaultValue="pie" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="pie">Pie Chart</TabsTrigger>
-                    <TabsTrigger value="line">Line Chart</TabsTrigger>
+                <Tabs defaultValue="table" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="table">Table View</TabsTrigger>
+                    <TabsTrigger value="lineChart">Line Chart</TabsTrigger>
+                    <TabsTrigger value="pieChart">Pie Chart</TabsTrigger>
                   </TabsList>
-                  <TabsContent value="pie">
-                    <ExcelPreviewChart type="pie" />
+                  <TabsContent value="table">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <tr>
+                            <th scope="col" className="px-6 py-3">ID</th>
+                            <th scope="col" className="px-6 py-3">Bank Account</th>
+                            <th scope="col" className="px-6 py-3">Currency</th>
+                            <th scope="col" className="px-6 py-3">Amount</th>
+                            <th scope="col" className="px-6 py-3">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentItems.map((balance) => (
+                            <tr key={balance.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                              <td className="px-6 py-4">{balance.id}</td>
+                              <td className="px-6 py-4">{balance.bankAccount.id}</td>
+                              <td className="px-6 py-4">{balance.currency.symbol}</td>
+                              <td className="px-6 py-4">{balance.amount}</td>
+                              <td className="px-6 py-4">{new Date(balance.dateTime).toLocaleDateString()}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-4 flex justify-between items-center">
+                      <Button
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        variant="outline"
+                      >
+                        <FiChevronLeft className="mr-2" />
+                        Previous
+                      </Button>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Page {currentPage} of {Math.ceil(balances.length / itemsPerPage)}
+                      </span>
+                      <Button
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={currentPage === Math.ceil(balances.length / itemsPerPage)}
+                        variant="outline"
+                      >
+                        Next
+                        <FiChevronRight className="ml-2" />
+                      </Button>
+                    </div>
                   </TabsContent>
-                  <TabsContent value="line">
-                    <ExcelPreviewChart type="line" />
+                  <TabsContent value="lineChart">
+                    <ChartContainer
+                      config={{
+                        amount: {
+                          label: "Amount",
+                          color: "hsl(var(--chart-1))",
+                        },
+                      }}
+                      className="h-[400px]"
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={lineChartData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="date" />
+                          <YAxis />
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                          <Legend />
+                          <Line type="monotone" dataKey="amount" stroke="var(--color-amount)" name="Amount" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
+                  </TabsContent>
+                  <TabsContent value="pieChart">
+                    <ChartContainer
+                      config={{
+                        value: {
+                          label: "Amount",
+                          color: "hsl(var(--chart-1))",
+                        },
+                      }}
+                      className="h-[400px]"
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={pieChartDataArray}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={80}
+                            fill="var(--color-value)"
+                            label
+                          />
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                          <Legend />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
                   </TabsContent>
                 </Tabs>
                 <div className="absolute top-2 right-2 bg-gray-100 dark:bg-gray-700 p-2 rounded-md shadow">
@@ -179,7 +372,7 @@ function IndexComponent() {
           </Button>
         </div>
       </section>
-      <ChatbotComponent />
+
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -207,17 +400,5 @@ function FeatureCard({
         <p className="text-gray-600 dark:text-gray-300">{description}</p>
       </CardContent>
     </Card>
-  );
-}
-
-function ExcelPreviewChart({ type }: { type: 'pie' | 'line' }) {
-  return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded p-4 flex items-center justify-center h-64">
-      {type === 'pie' ? (
-        <FiPieChart className="w-32 h-32 text-primary" />
-      ) : (
-        <FiBarChart2 className="w-32 h-32 text-primary" />
-      )}
-    </div>
   );
 }
