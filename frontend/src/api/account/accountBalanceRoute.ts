@@ -16,7 +16,7 @@ async function fetchAccountBalance<T>(endpoint: string, options: RequestInit = {
     }
     
     return await response.json() as T;
-  }
+}
 
 // gets all account balances
 async function fetchAllAccountBalance(): Promise<accountBalance[]> {
