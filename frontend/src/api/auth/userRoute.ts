@@ -23,35 +23,35 @@ async function fetchUser<T>(endpoint: string, options: RequestInit = {}): Promis
 
 // fetches all users
 async function fetchUsers(): Promise<user[]> {
-  return await fetchUser<user[]>('/users');
+    return await fetchUser<user[]>('/');
 }
 
 // gets a user
-async function fetchUserById(userId: string): Promise<user> {
-  return await fetchUser<user>(`/users/${userId}`);
+async function fetchUserById(userId: String): Promise<user> {
+    return await fetchUser<user>(`/${userId}`);
 }
 
 // creates a user
 async function createUser(newUser: Partial<user>): Promise<user> {
-  return await fetchUser<user>('/users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newUser),
-  });
+    return await fetchUser<user>('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(newUser),
+    });
 }
 
 // updates a user
-async function updateUser(userId: string, user: Partial<user>): Promise<user> {
-  return await fetchUser<user>(`/users/${userId}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(user),
-  });
+async function updateUser(userId: String, user: Partial<user>): Promise<user> {
+    return await fetchUser<user>(`/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+    });
 }
 
 // deletes a user
-async function deleteUser(userId: string): Promise<user> {
-  return await fetchUser(`/users/${userId}`, {
-    method: 'DELETE',
-  });
+async function deleteUser(userId: String): Promise<user> {
+    return await fetchUser(`/${userId}`, {
+        method: 'DELETE',
+    });
 }

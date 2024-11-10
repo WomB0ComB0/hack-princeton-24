@@ -3,13 +3,54 @@ interface transactionType {
   name: string;
 }
 
-async function fetchTransactionTypes(): Promise<transactionType[]> {
-  const response = await fetch('http://localhost:8080/graphql');
-
+// generic function that handles all CRUD operations
+async function fetchTransactionType<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+  
   if (!response.ok) {
-    throw new Error('Failed to fetch transaction types');
+    const errorText = await response.text();
+    throw new Error(`Error: ${response.status} - ${errorText}`);
   }
+  
+  return await response.json() as T;
+}
 
-  const transactionType = (await response.json()) as transactionType[];
-  return transactionType;
+// gets all transaction types
+async function fetchAllTransactionType(): Promise<transactionType[]> {
+  return await fetchTransactionType<transactionType[]>('/');
+}
+
+// gets a transactionType by id
+async function fetchTransactionTypeById(id: number): Promise<transactionType> {
+  return await fetchTransactionType<transactionType>(`/${id}`);
+}
+
+// gets a transactionType by name
+async function fetchTransactionTypeByName(name: string): Promise<transactionType> {
+  return await fetchTransactionType<transactionType>(`/${name}`);
+}
+
+// create a transactionType
+async function createTransactionType(newTransactionType: Partial<transactionType>): Promise<transactionType> {
+  return await fetchTransactionType<transactionType>('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(newTransactionType),
+  });
+}
+
+// change a transactionType
+async function updateTransactionType(id: number, transactionType: Partial<transactionType>): Promise<transactionType> {
+  return await fetchTransactionType<transactionType>(`/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(transactionType),
+  });
+}
+
+// delete a transactionType
+async function deleteTransactionType(id: number): Promise<transactionType> {
+  return await fetchTransactionType(`/${id}`, {
+    method: 'DELETE',
+  });
 }

@@ -44,7 +44,7 @@ async function createAccountBalance(newAccountBalance: Partial<accountBalance>):
 
 // delete account balance (for manual entries)
 async function deleteAccountBalance(id: number): Promise<accountBalance> {
-  return await fetchAccountBalance(`${id}`, {
+  return await fetchAccountBalance(`/${id}`, {
     method: 'DELETE',
   })
 }
