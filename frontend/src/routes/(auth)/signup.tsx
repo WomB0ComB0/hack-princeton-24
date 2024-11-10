@@ -1,6 +1,6 @@
+import { useAuth } from '@/core/auth';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useAuth } from '../user_context';
 
 export const Route = createFileRoute('/(auth)/signup')({
   component: Signup,

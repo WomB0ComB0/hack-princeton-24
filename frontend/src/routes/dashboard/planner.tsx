@@ -12,10 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useAuth } from '@/core/auth';
 import { createFileRoute } from '@tanstack/react-router';
-import { AlertCircle, DollarSign, TrendingUp } from 'lucide-react';
+import { AlertCircle, DollarSign } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useUserContext } from '../user_context';
 
 const LoadingSkeleton = () => {
   return (
@@ -109,7 +109,7 @@ const RecentTransactions = ({ transactions }: { transactions: transaction[] }) =
 };
 
 function Planner() {
-  const { user, loading: userLoading } = useUserContext();
+  const { currentUser } = useAuth();
   const [accountBalances, setAccountBalances] = useState<accountBalance[]>([]);
   const [transactions, setTransactions] = useState<transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,13 +117,13 @@ function Planner() {
 
   useEffect(() => {
     async function loadData() {
-      if (userLoading || !user) return;
+      if (!currentUser) return;
 
       try {
         setLoading(true);
         const [balances, transactionsData] = await Promise.all([
           fetchAllAccountBalances(),
-          fetchTransactionsByUserId(user.id),
+          fetchTransactionsByUserId(currentUser.uid), // Using uid instead of id
         ]);
         setAccountBalances(balances);
         setTransactions(transactionsData);
@@ -135,9 +135,9 @@ function Planner() {
     }
 
     loadData();
-  }, [user, userLoading]);
+  }, [currentUser]);
 
-  if (userLoading || loading) {
+  if (currentUser === undefined) {
     return <LoadingSkeleton />;
   }
 
@@ -145,14 +145,14 @@ function Planner() {
     return <ErrorAlert message={error} />;
   }
 
-  if (!user) {
+  if (!currentUser) {
     return <ErrorAlert message="Please log in to view your planner." />;
   }
 
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">
-        Financial Planner for {user.first_name} {user.last_name}
+        Financial Planner for {currentUser.displayName || 'User'}
       </h1>
       <AccountSummary balances={accountBalances} />
       <RecentTransactions transactions={transactions} />

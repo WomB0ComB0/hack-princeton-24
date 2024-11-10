@@ -1,3 +1,4 @@
+import { Providers } from '@/providers';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 import * as React from 'react';
 
@@ -49,9 +50,11 @@ function RootComponent() {
           <script type="module" src="/src/entry-client.tsx" />
         </head>
         <body>
-          <main className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <Outlet />
-          </main>
+          <Providers>
+            <main className="min-h-screen bg-gray-100 dark:bg-gray-900">
+              <Outlet />
+            </main>
+          </Providers>
         </body>
       </html>
     </React.Fragment>
